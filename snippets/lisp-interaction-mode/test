@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: test
+# key: test
+# --
+// Test de F
+if ( A == B ) {
+    cout << " Le test de F a réussi" << endl;
+} else {
+    cout << " Le test de F a échoué: " << endl;
+}

@@ -61,5 +61,10 @@ Missing packages are installed automatically."
 (require 'use-package)
 (setq use-package-always-ensure t)
 
+(require 'multiple-cursors)
+(global-set-key (kbd "C->") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c C-<") 'mc/mark-all-like-this)
+
 (provide 'siren-packages)
 ;;; siren-packages.el ends here

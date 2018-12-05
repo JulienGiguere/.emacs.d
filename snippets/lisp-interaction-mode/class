@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: class
+# key: class
+# --
+class M {
+    int a;
+public:
+    M() {
+      a = 0;
+    }
+};

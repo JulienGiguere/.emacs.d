@@ -16,5 +16,5 @@
 (setq load-prefer-newer t)
 (load (expand-file-name "core/siren-init.el"
                         (file-name-directory load-file-name)))
-
+(setq neo-theme (if (display-graphic-p) 'nerds))
 ;;; init.el ends here

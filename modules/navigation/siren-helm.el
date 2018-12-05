@@ -49,7 +49,7 @@
                (fboundp 'neo-global--window-exists-p)
                (neo-global--window-exists-p))
       (setq siren-helm--did-hide-neotree t)
-      (neotree-hide)))
+     (neotree-hide)))
 
   (defun siren-helm--show-neotree-maybe ()
     (when (and (fboundp 'neotree-show)
@@ -67,6 +67,7 @@
         helm-file-name-case-fold-search 'smart
         helm-split-window-default-side 'below
         siren-helm--did-hide-neotree nil)
+
 
   (advice-add 'helm :before 'siren-helm--hide-neotree))
 

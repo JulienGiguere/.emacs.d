@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: init-h
+# key: init-h
+# key: header
+# --
+// File      :  .h
+// Auteur(s) :
+// Date      : `(insert (format-time-string "%Y-%m-%d"))`$0
+
+//#ifndef __H_
+//#define __H_
+
+
+
+//#endif __H_

@@ -13,5 +13,6 @@
     (require 'siren-theme-doom-vibrant)
   (require 'siren-theme-tomorrow-night-paradise))
 
+(set-default-font "Source Code Pro-12")
 (provide 'siren-theme)
 ;;; siren-theme.el ends here

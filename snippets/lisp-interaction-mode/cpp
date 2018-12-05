@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: c++
+# key: c++
+# --
+// Fichier    :
+// Auteur(s)  :
+// Date       : `(insert (format-time-string "%Y-%m-%d"))`$0
+
+#include<iostream>
+
+using namespace std;
+
+int main() {
+
+}
