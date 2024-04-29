@@ -12,25 +12,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(chatgpt-shell-model-versions
-  '("gpt-3.5-turbo-16k-0613" "gpt-3.5-turbo-16k" "gpt-3.5-turbo-0613" "gpt-3.5-turbo"))
  '(highlight-indent-guides-auto-character-face-perc 20)
  '(highlight-indent-guides-auto-even-face-perc 15)
  '(highlight-indent-guides-auto-odd-face-perc 15)
  '(highlight-indent-guides-method 'character)
  '(package-selected-packages
-  '(chatgpt-shell sideline-blame git-blamed highlight-indentation markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete highlight-indent-guides drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
-
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(org-level-1 ((t (:inherit outline-1 :height 1.2))))
- '(org-level-2 ((t (:inherit outline-2 :height 1.15))))
- '(org-level-3 ((t (:inherit outline-3 :height 1.1))))
- '(org-level-4 ((t (:inherit outline-4 :height 1.05))))
- '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+  '(svg-lib svg-tag-mode sideline-blame git-blamed highlight-indentation markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete highlight-indent-guides drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
@@ -232,7 +219,6 @@
 (use-package drag-stuff
   :ensure t )
 
-
 ;;Org-mode
 (use-package org-bullets
 	:ensure t
@@ -242,8 +228,99 @@
 	:config
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+(setq org-todo-keywords
+  '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "LOOP(l)" "DONE(d)")))
 
+;; Org svg
 
+(defun svg-progress-percent (value)
+  (save-match-data
+   (svg-image (svg-lib-concat
+               (svg-lib-progress-bar  (/ (string-to-number value) 100.0)
+                                 nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+               (svg-lib-tag (concat value "%")
+                            nil :stroke 0 :margin 0)) :ascent 'center)))
+
+(defun svg-progress-count (value)
+  (save-match-data
+    (let* ((seq (split-string value "/"))           
+           (count (if (stringp (car seq))
+                      (float (string-to-number (car seq)))
+                    0))
+           (total (if (stringp (cadr seq))
+                      (float (string-to-number (cadr seq)))
+                    1000)))
+      (svg-image (svg-lib-concat
+                  (svg-lib-progress-bar (/ count total) nil
+                                        :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+                  (svg-lib-tag value nil
+                               :stroke 0 :margin 0)) :ascent 'center))))
+
+(defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+(defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+(defconst day-re "[A-Za-z]\\{3\\}")
+(defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
+
+(use-package svg-tag-mode
+  :ensure t
+  :hook org-mode
+  :config
+  (setq svg-tag-tags
+        '(
+          ;; (":\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
+          ;; (":\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
+
+          ;;TODOs
+          ("TODO" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "IndianRed" :weight bold) :inverse t))))
+	        ("NEXT" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "#007acc" :weight bold) :inverse t))))
+	        ("WAIT" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "GoldenRod" :weight bold) :inverse t))))
+	        ("PROJ" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "DarkMagenta" :weight bold) :inverse t))))
+	        ("LOOP" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "Salmon" :weight bold) :inverse t))))
+	        ("DONE" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "DarkSeaGreen" :weight bold :strike-through t) :inverse t))))
+
+          ;; Citation of the form [cite:@Knuth:1984] 
+          ("\\(\\[cite:@[A-Za-z]+:\\)" . ((lambda (tag)
+                                            (svg-tag-make tag
+                                                          :inverse t
+                                                          :beg 7 :end -1
+                                                          :crop-right t))))
+          ("\\[cite:@[A-Za-z]+:\\([0-9]+\\]\\)" . ((lambda (tag)
+                                                     (svg-tag-make tag
+                                                                   :end -1
+                                                                   :crop-left t))))
+          ;; Commands
+          ("{[0-9a-zA-Z- ]+?}" . ((lambda (tag)
+                                    (svg-tag-make tag :face 'font-lock-comment-face
+                                                  :margin 0 :beg 1 :end -1))))
+          ;; Active date (with or without day name, with or without time)
+          ;; (,(format "\\(<%s>\\)" date-re) .
+          ;;  ((lambda (tag)
+          ;;     (svg-tag-make tag :beg 1 :end -1 :margin 0))))
+          ;; (,(format "\\(<%s \\)%s>" date-re day-time-re) .
+          ;;  ((lambda (tag)
+          ;;     (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
+          ;; (,(format "<%s \\(%s>\\)" date-re day-time-re) .
+          ;;  ((lambda (tag)
+          ;;     (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
+          ;; ;; Inactive date  (with or without day name, with or without time)
+          ;; (,(format "\\(\\[%s\\]\\)" date-re) .
+          ;;  ((lambda (tag)
+          ;;     (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
+          ;; (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
+          ;;  ((lambda (tag)
+          ;;     (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
+          ;; (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
+          ;;  ((lambda (tag)
+          ;;     (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))
+          ;; ;; Progress
+          ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
+                                              (svg-progress-percent (substring tag 1 -2)))))
+          ("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag)
+                                            (svg-progress-count (substring tag 1 -1)))))
+          )
+        )
+  )
+  
 ;; org-roam dependencies
 (use-package websocket
   :ensure t)
