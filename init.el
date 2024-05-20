@@ -12,16 +12,19 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(highlight-indent-guides-auto-character-face-perc 20)
- '(highlight-indent-guides-auto-even-face-perc 15)
- '(highlight-indent-guides-auto-odd-face-perc 15)
- '(highlight-indent-guides-method 'character)
+ '(chatgpt-shell-model-versions
+   '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
+;; '(set-face-background highlight-indent-guides-even-face 80)
+;; '(set-face-background highlight-indent-guides-odd-face 80)
+;; '(set-face-background highlight-indent-guides-top-character-face 80)
+ '(highlight-indent-guides-method 'column)
+ '(highlight-indent-guides-responsive 'top)
  '(package-selected-packages
-  '(svg-lib svg-tag-mode sideline-blame git-blamed highlight-indentation markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete highlight-indent-guides drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+   '(ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed highlight-indentation markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete highlight-indent-guides drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
-  (global-set-key (kbd "C-c r") (lambda () (interactive) (load-file "~/.emacs.d/init.el")))
+  (global-set-key (kbd "C-c e") (lambda () (interactive) (load-file "~/.emacs.d/init.el")))
 
   ;;Renders Images inline of an org file
   (defun do-org-show-all-inline-images ()
@@ -42,6 +45,19 @@
       delete-old-versions    t  ; Automatically delete excess backups:
       kept-new-versions      20 ; how many of the newest versions to keep
       kept-old-versions      5) ; and how many of the old
+
+;;Word Wrap
+(add-hook 'text-mode-hook 'visual-line-mode)
+(global-set-key (kbd "C-c w w") 'visual-line-mode)
+
+
+;; Personnal Projects
+;;Dbus
+(require 'dbus)
+;; Antidote Dbus
+;;(load "~/.emacs.d/lib/antidote-dbus.el")
+;; (global-set-key (kbd "C-c a a") 'launch-antidote)
+;; (global-set-key (kbd "C-c a c") 'antidote-corrige-dans-texte)
 
 ;; Package Management
 (require 'package)
@@ -68,8 +84,9 @@
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/julien-theme.el")  
 
-;; Set colors of marked region & color of marked text
-(set-face-attribute 'region nil :background "#666" :foreground "#ffffff")
+;; Set color for selected region
+(set-face-attribute 'region nil :background "#424140")
+;; Set color for current line (where the cursor is)
 (set-face-background hl-line-face "gray13") 
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(80 . 79))
@@ -85,11 +102,82 @@
     (setq blink-cursor-count (+ 1 blink-cursor-count)))
   (internal-show-cursor nil (not (internal-show-cursor-p))))
 
+;; Conf-mode
+(add-to-list 'auto-mode-alist '("\\.gdextension\\'" . conf-mode))
+
+;; Artist Mode
+(add-hook 'artist-mode-hook
+	        (lambda ()
+	          (local-set-key (kbd "<f1>") 'org-mode)
+	          (local-set-key (kbd "<f2>") 'artist-select-op-pen-line) ; f2 = pen mode
+            (local-set-key (kbd "<f3>") 'artist-select-op-line)     ; f3 = line
+	          (local-set-key (kbd "<f4>") 'artist-select-op-square)   ; f4 = rectangle
+	          (local-set-key (kbd "<f5>") 'artist-select-op-ellipse)  ; f5 = ellipse
+	          (local-set-key (kbd "C-z") 'undo)
+            ))
+
+(global-set-key (kbd "C-<f5>") (lambda()
+			                           (interactive)
+			                           (show-all)
+			                           (artist-mode)))
+
+;; Spellcheck - flyspell - Hunspell
+(setq ispell-program-name "hunspell")
+
+(setq ispell-local-dictionary-alist
+      '(("en_CA" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_CA") nil utf-8)
+        ("fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_FR") nil utf-8)
+       ;; ("en_CA+fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_CA,fr_FR") nil utf-8) ;; Bilingual dict. not working as intended.
+  )) 
+
+(setq ispell-dictionary "en_CA")
+
+(defun my-toggle-dictionary ()
+  "Toggle between English (Canadian) and French"  ;;, and bilingual fr-en dictionary."
+  (interactive)
+  (let ((current-dict (or ispell-local-dictionary ispell-dictionary)))
+   (ispell-change-dictionary (if (string= current-dict "en_CA") "fr_FR" "en_CA")))
+   ;;(ispell-change-dictionary (if (string= current-dict "en_CA") "fr_FR" (if (string= current-dict "fr_FR") "en_CA+fr_FR" "en_CA")))) ;; Bilingual dict. not working as intended.
+    (message "Switched to %s" (or ispell-local-dictionary ispell-dictionary)))
+
+(global-set-key (kbd "C-c f") 'flyspell-mode)
+(global-set-key (kbd "C-c t") 'my-toggle-dictionary)
+(global-set-key (kbd "C-c r") 'flyspell-region)
+(global-set-key (kbd "M-p") 'flyspell-check-previous-highlighted-word)
+(global-set-key (kbd "M-n") 'Flyspell-Goto-next-error)
+
+(dolist (hook '(org-mode-hook))
+  (add-hook hook (lambda () (flyspell-mode 1))))
+
+(setq-default company-backends '((company-bbdb :with company-yasnippet)
+                                 (company-dabbrev company-ispell :with company-yasnippet)))
+
+;; SVG.el
+;;(load "~/.emacs.d/svg.el")
+(require 'svg)
+(use-package svg
+  :ensure nil
+  :load-path "~/.emacs.d/lib/svg.el")
+
+;; make-box.el -janky-
+;;(load "~/.emacs.d/lib/make-box.el")
+
+;;grid.el -Generates colums but they arent editable...-
+;;(load "~/.emacs.d/lib/grid.el")
+
+;;(use-package treesit-auto
+;;  :config
+;;  (treesit-auto-add-to-auto-mode-alist 'all))
+
 ;; Displays the key bindings following your currently entered incomplete command (a prefix) in a popup
 (use-package which-key
 :ensure t
 :config
 (which-key-mode))
+
+(use-package casual-dired
+  :ensure t
+  :bind (:map dired-mode-map ("C-x o" . 'casual-dired-tmenu)))
 
 ;; Treemacs -Only using the icons from treemacs into dired
 (use-package treemacs
@@ -208,17 +296,47 @@
 (setq indent-line-function 'insert-tab)
 
 (setq js-indent-level 2)
-  
+
 ;;defun custom-tab-mode-hook ()
 ;;  (setq tab-width 2))
 ;;add-hook 'prog-mode-hook #'jpk/c-mode-common-hook)
 
 (add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
+;; Indent Highlight Guide custom changes...
+;; (defun my-highlighter (level responsive display)
+;;   "Custom highlighter function for highlight-indent-guides-mode.
+;;    Returns 'character for odd levels and 'bitmap for even levels."
+;;   (if (= (% level 2) 0 )
+;;       (highlight-indent-guides--highlighter-default level top 'character)
+;;     (highlight-indent-guides--highlighter-default level top 'bitmap)))
+
+;; (setq highlight-indent-guides-highlighter-function 'my-highlighter)
+
 ;;drag-struff
 (use-package drag-stuff
-  :ensure t )
+  :ensure t
+  :config
+  (drag-stuff-global-mode 1)
+  (drag-stuff-define-keys))
 
+(when (require 'paredit nil t)
+  (dolist (map (list lisp-mode-map emacs-lisp-mode-map))
+    (define-key map (kbd "M-(")   'paredit-wrap-round)
+    (define-key map (kbd "C-M-f") 'paredit-forward)
+    (define-key map (kbd "C-M-b") 'paredit-backward)
+    (define-key map (kbd "C-)")   'paredit-forward-slurp-sexp)
+    (define-key map (kbd "C-M-)") 'paredit-forward-barf-sexp)
+    (define-key map (kbd "C-(")   'paredit-backward-slurp-sexp)
+    (define-key map (kbd "C-M-(") 'paredit-backward-barf-sexp)
+    (define-key map (kbd "M-s s") 'paredit-split-sexp)
+    (define-key map (kbd "M-s r") 'paredit-raise-sexp)
+    (define-key map (kbd "M-s S") 'paredit-join-sexps)
+    (define-key map (kbd "M-s J") 'paredit-join-sexps)
+    (define-key map (kbd "M-s u") 'paredit-splice-sexp-killing-backward)
+    (define-key map (kbd "M-s d") 'paredit-splice-sexp-killing-forward)
+    (define-key map (kbd "M-q")   'paredit-reindent-defun)))
+  
 ;;Org-mode
 (use-package org-bullets
 	:ensure t
@@ -228,11 +346,15 @@
 	:config
 	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
+;; active Babel languages
+(org-babel-do-load-languages
+'org-babel-load-languages
+'((shell . t)))
+
 (setq org-todo-keywords
   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "LOOP(l)" "DONE(d)")))
 
 ;; Org svg
-
 (defun svg-progress-percent (value)
   (save-match-data
    (svg-image (svg-lib-concat
@@ -256,10 +378,10 @@
                   (svg-lib-tag value nil
                                :stroke 0 :margin 0)) :ascent 'center))))
 
-(defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
-(defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
-(defconst day-re "[A-Za-z]\\{3\\}")
-(defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
+;; (defconst date-re "[0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}")
+;; (defconst time-re "[0-9]\\{2\\}:[0-9]\\{2\\}")
+;; (defconst day-re "[A-Za-z]\\{3\\}")
+;; (defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
 
 (use-package svg-tag-mode
   :ensure t
@@ -332,6 +454,17 @@
   :ensure t
   :custom
   (org-roam-directory "~/Documents/RoamNotes")
+  (org-roam-completion-everywhere t)
+  (org-roam-capture-templates
+   '(("d" "default" plain
+      "%?"
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: default")
+      :unnarrowed t)
+     ("s" "saura" plain
+      ""
+      :if-new (file+head "saura%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: saura")
+      :unnarrowed t)  
+     ))
   :bind (("C-c n l" . org-roam-buffer-toggle)
 	       ("C-c n f" . org-roam-node-find)
 	       ("C-c n i" . org-roam-node-insert)
@@ -345,6 +478,10 @@
 (add-to-list 'load-path "~/.emacs.d/gitclone/org-roam-ui/")
 (load-library "org-roam-ui")
 
+(define-key global-map (kbd "<f12>") #'org-transclusion-add)
+(define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
+(add-hook 'org-mode-hook 'org-transclusion-mode)
+
 ;; LSP - InteliSense
 (when (cl-find-if-not #'package-installed-p package-selected-packages)
   (package-refresh-contents)
@@ -356,6 +493,11 @@
 ;;(define-key global-map [remap switch-to-buffer] #'helm-mini)
 (which-key-mode)
 (add-hook 'prog-mode-hook #'lsp)
+;; (add-hook 'prog-mode-hook
+;;           (lambda ()
+;;             (unless (derived-mode-p 'rustic-mode)
+;;               (add-hook 'prog-mode-hook
+;;                         #'lsp t t))))
 (setq gc-cons-threshold (* 100 1024 1024)
       read-process-output-max (* 1024 1024)
       company-idle-delay 0.0
@@ -365,12 +507,30 @@
   (require 'dap-chrome)
   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
+(setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+(use-package rustic
+  :custom
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+
 ;; Restclient
 (use-package restclient
        :ensure t)
       (use-package try
 	      :ensure t)
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
+
+;; Chatgpt
+(use-package chatgpt-shell
+  :ensure t
+  :config
+  (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
+  (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
+  (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
+  (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
+  (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
+  (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
+  (setq chatgpt-shell-openai-key
+        (auth-source-pick-first-password :host "api.openai.com")))
 
 ;; helm
 (use-package helm
@@ -387,6 +547,10 @@
     (ivy-mode 1)
     (setq ivy-use-virtual-buffers t)
     (setq ivy-count-format "(%d/%d) "))
+
+;; expand-region
+(use-package expand-region
+  :bind ("C-=" . er/expand-region))
 
 ;; multiple-cursors
 (use-package multiple-cursors
