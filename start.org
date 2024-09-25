@@ -1,12 +1,47 @@
 #
-# ███████╗███╗   ███╗ █████╗  ██████╗███████╗
-# ██╔════╝████╗ ████║██╔══██╗██╔════╝██╔════╝
-# █████╗  ██╔████╔██║███████║██║     ███████╗
-# ██╔══╝  ██║╚██╔╝██║██╔══██║██║     ╚════██║
-# ███████╗██║ ╚═╝ ██║██║  ██║╚██████╗███████║
-# ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝
+#  ███████╗███╗   ███╗ █████╗  ██████╗███████╗
+#  ██╔════╝████╗ ████║██╔══██╗██╔════╝██╔════╝
+#  █████╗  ██╔████╔██║███████║██║     ███████╗
+#  ██╔══╝  ██║╚██╔╝██║██╔══██║██║     ╚════██║
+#  ███████╗██║ ╚═╝ ██║██║  ██║╚██████╗███████║
+#  ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝
 #
 
+#+begin_src 
+#+end_src
+
+[[id:4e24e223-f5b4-4156-9884-df7c0c688b24][ETS]] 
+
+[[https://calendar.google.com/calendar/u/0/r/week][Calendrier]]
+[[https://outlook.office.com/mail/][Outlook ETS]]
+[[https://portail.etsmtl.ca/home][Mon ÉTS]]
+
+* TODO
+** WAIT Carte Étudiante + Photo
+** WAIT Assurance
+** WAIT Payment
+** Portails
+*** Interface
+**  Organisation
+*** Calendrier
+*** Plan
+*** Routine
+** Cours
+*** Plans de cours
+*** Calendrier examens
+*** PlantUML
+*** Latex
+** Config
+*** Screen settings
+*** Projecting
+*** Screenshot
+*** Colors and background colors of waybar options menus
+** LinkedIn
+
+* Notes
+#+transclude: [[id:e8db57c3-774e-47c6-bd7c-7d06e4ac9a86][Notes]]
+
 * Config
-[[file:init.el][init.el]]
-[[file:config.org][i3 config]]
+#+transclude: [[id:3fe1628f-c6f1-4857-9edd-56aaed4661d5][Configuration]]
+
+

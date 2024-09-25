@@ -14,13 +14,11 @@
  ;; If there is more than one, they won't work right.
  '(chatgpt-shell-model-versions
    '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
-;; '(set-face-background highlight-indent-guides-even-face 80)
-;; '(set-face-background highlight-indent-guides-odd-face 80)
-;; '(set-face-background highlight-indent-guides-top-character-face 80)
- '(highlight-indent-guides-method 'column)
- '(highlight-indent-guides-responsive 'top)
+ '(custom-enabled-themes '(julien-theme))
+ '(custom-safe-themes
+   '("2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
  '(package-selected-packages
-   '(ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed highlight-indentation markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete highlight-indent-guides drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+   '(svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
@@ -105,6 +103,11 @@
 ;; Conf-mode
 (add-to-list 'auto-mode-alist '("\\.gdextension\\'" . conf-mode))
 
+
+;;LaTex
+(setenv "PATH" (concat "/usr/local/texlive/2024/bin/x86_64-linux:" (getenv "PATH")))
+;;(setq org-latex-packages-alist '(("" "fullpage") ("avoid-all" "widows-and-orphans") ("" "svg"))
+
 ;; Artist Mode
 (add-hook 'artist-mode-hook
 	        (lambda ()
@@ -146,8 +149,8 @@
 (global-set-key (kbd "M-p") 'flyspell-check-previous-highlighted-word)
 (global-set-key (kbd "M-n") 'Flyspell-Goto-next-error)
 
-(dolist (hook '(org-mode-hook))
-  (add-hook hook (lambda () (flyspell-mode 1))))
+;; (dolist (hook '(org-mode-hook))
+;;   (add-hook hook (lambda () (flyspell-mode 1))))
 
 (setq-default company-backends '((company-bbdb :with company-yasnippet)
                                  (company-dabbrev company-ispell :with company-yasnippet)))
@@ -290,6 +293,11 @@
   :ensure t
   :config (treemacs-set-scope-type 'Tabs))
 
+;;wiki info org
+(use-package wikinforg
+  :ensure t)
+
+
 ;;Identation
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 2)
@@ -301,7 +309,7 @@
 ;;  (setq tab-width 2))
 ;;add-hook 'prog-mode-hook #'jpk/c-mode-common-hook)
 
-(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
+;;(add-hook 'prog-mode-hook 'highlight-indent-guides-mode)
 
 ;; Indent Highlight Guide custom changes...
 ;; (defun my-highlighter (level responsive display)
@@ -313,7 +321,7 @@
 
 ;; (setq highlight-indent-guides-highlighter-function 'my-highlighter)
 
-;;drag-struff
+;;drag-stuff
 (use-package drag-stuff
   :ensure t
   :config
@@ -349,7 +357,8 @@
 ;; active Babel languages
 (org-babel-do-load-languages
 'org-babel-load-languages
-'((shell . t)))
+'((shell . t)
+  (gnuplot . t)))
 
 (setq org-todo-keywords
   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "LOOP(l)" "DONE(d)")))
@@ -458,11 +467,19 @@
   (org-roam-capture-templates
    '(("d" "default" plain
       "%?"
-      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: default")
+      :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :default:")
       :unnarrowed t)
+     ("e" "ets" plain
+      ""
+      :if-new (file+head "ets%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :ets:")
+      :unnarrowed t)  
+     ("n" "notes" plain
+      ""
+      :if-new (file+head "notes%<%Y-%m-%d_%H:%M:%S>-${slug}.org" "#+title: ${title}\n#+author:Secrétaire: Julien Giguère\n#+LANGUAGE: fr\n#+filetags: :ets:notes:")
+      :unnarrowed t)  
      ("s" "saura" plain
       ""
-      :if-new (file+head "saura%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: saura")
+      :if-new (file+head "saura%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :saura:")
       :unnarrowed t)  
      ))
   :bind (("C-c n l" . org-roam-buffer-toggle)
@@ -477,6 +494,14 @@
   (org-roam-setup))
 (add-to-list 'load-path "~/.emacs.d/gitclone/org-roam-ui/")
 (load-library "org-roam-ui")
+
+(require 'org-roam-export)
+(setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
+(add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
+(setq org-latex-toc-command "\\tableofcontents \\clearpage")
+(define-key global-map (kbd "C-c n e") #'org-latex-export-to-pdf)
+
+
 
 (define-key global-map (kbd "<f12>") #'org-transclusion-add)
 (define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
@@ -598,3 +623,9 @@
 	 "{" \n
 	 > _ \n
 	 "}" > \n)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
