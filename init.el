@@ -475,7 +475,7 @@
       :unnarrowed t)  
      ("n" "notes" plain
       ""
-      :if-new (file+head "notes%<%Y-%m-%d_%H:%M:%S>-${slug}.org" "#+title: ${title}\n#+author:Secrétaire: Julien Giguère\n#+LANGUAGE: fr\n#+filetags: :ets:notes:")
+      :if-new (file+head "notes%<%Y-%m-%d_%H:%M:%S>-${slug}.org" "#+title: ${title}\n#+author:Secrétaire Julien Giguère\n#+LANGUAGE: fr\n#+filetags: :ets:notes:")
       :unnarrowed t)  
      ("s" "saura" plain
       ""
