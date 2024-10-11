@@ -14,15 +14,34 @@
  ;; If there is more than one, they won't work right.
  '(chatgpt-shell-model-versions
    '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
- '(custom-enabled-themes '(julien-theme))
+ '(custom-enabled-themes '(julien))
  '(custom-safe-themes
-   '("2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
+   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b" "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
  '(package-selected-packages
-   '(svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+   '(xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
   (global-set-key (kbd "C-c e") (lambda () (interactive) (load-file "~/.emacs.d/init.el")))
+
+;; Hyprland specific config. - comment out  on other systems
+;; Function to copy text to the clipboard using wl-copy
+(defun my-wl-copy (text &optional push)
+  "Copy TEXT to the clipboard using wl-copy."
+  (let ((process (start-process "wl-copy" nil "wl-copy" "-f")))
+    (process-send-string process text)
+    (process-send-eof process)))
+;; Function to paste text from the clipboard using wl-paste
+(defun my-wl-paste ()
+  "Paste text from the clipboard using wl-paste."
+  (let ((output (shell-command-to-string "wl-paste -n")))
+    (if (string= output "")
+        nil
+      output)))
+;; Set the interprogram cut and paste functions
+(setq interprogram-cut-function 'my-wl-copy)
+(setq interprogram-paste-function 'my-wl-paste)
+
 
   ;;Renders Images inline of an org file
   (defun do-org-show-all-inline-images ()
@@ -80,10 +99,16 @@
   (setq initial-buffer-choice "~/.emacs.d/start.org")
 
 ;; Theme
-(add-to-list 'custom-theme-load-path "~/.emacs.d/julien-theme.el")  
+(add-to-list 'custom-theme-load-path "~/dotfiles/.emacs.d/julien-theme.el")  
+
+;; Set the default font
+(set-face-attribute 'default nil
+                    :family "Fira Code Retina"
+                    :height 108)
 
 ;; Set color for selected region
-(set-face-attribute 'region nil :background "#424140")
+(set-face-attribute 'region nil
+                    :background "#424140")
 ;; Set color for current line (where the cursor is)
 (set-face-background hl-line-face "gray13") 
 
@@ -157,10 +182,10 @@
 
 ;; SVG.el
 ;;(load "~/.emacs.d/svg.el")
-(require 'svg)
-(use-package svg
-  :ensure nil
-  :load-path "~/.emacs.d/lib/svg.el")
+;; (require 'svg)
+;; (use-package svg
+;;   :ensure nil
+;;   :load-path "~/.emacs.d/lib/svg.el")
 
 ;; make-box.el -janky-
 ;;(load "~/.emacs.d/lib/make-box.el")
@@ -392,65 +417,65 @@
 ;; (defconst day-re "[A-Za-z]\\{3\\}")
 ;; (defconst day-time-re (format "\\(%s\\)? ?\\(%s\\)?" day-re time-re))
 
-(use-package svg-tag-mode
-  :ensure t
-  :hook org-mode
-  :config
-  (setq svg-tag-tags
-        '(
-          ;; (":\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
-          ;; (":\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
+;; (use-package svg-tag-mode
+;;   :ensure t
+;;   :hook org-mode
+;;   :config
+;;   (setq svg-tag-tags
+;;         '(
+;;           ;; (":\\([A-Za-z0-9]+\\)" . ((lambda (tag) (svg-tag-make tag))))
+;;           ;; (":\\([A-Za-z0-9]+[ \-]\\)" . ((lambda (tag) tag)))
 
-          ;;TODOs
-          ("TODO" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "IndianRed" :weight bold) :inverse t))))
-	        ("NEXT" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "#007acc" :weight bold) :inverse t))))
-	        ("WAIT" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "GoldenRod" :weight bold) :inverse t))))
-	        ("PROJ" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "DarkMagenta" :weight bold) :inverse t))))
-	        ("LOOP" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "Salmon" :weight bold) :inverse t))))
-	        ("DONE" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "DarkSeaGreen" :weight bold :strike-through t) :inverse t))))
+;;           ;;TODOs
+;;           ("TODO" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "IndianRed" :weight bold) :inverse t))))
+;; 	        ("NEXT" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "#007acc" :weight bold) :inverse t))))
+;; 	        ("WAIT" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "GoldenRod" :weight bold) :inverse t))))
+;; 	        ("PROJ" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "DarkMagenta" :weight bold) :inverse t))))
+;; 	        ("LOOP" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "Salmon" :weight bold) :inverse t))))
+;; 	        ("DONE" . ((lambda (tag) (svg-tag-make tag :face '(:foreground "DarkSeaGreen" :weight bold :strike-through t) :inverse t))))
 
-          ;; Citation of the form [cite:@Knuth:1984] 
-          ("\\(\\[cite:@[A-Za-z]+:\\)" . ((lambda (tag)
-                                            (svg-tag-make tag
-                                                          :inverse t
-                                                          :beg 7 :end -1
-                                                          :crop-right t))))
-          ("\\[cite:@[A-Za-z]+:\\([0-9]+\\]\\)" . ((lambda (tag)
-                                                     (svg-tag-make tag
-                                                                   :end -1
-                                                                   :crop-left t))))
-          ;; Commands
-          ("{[0-9a-zA-Z- ]+?}" . ((lambda (tag)
-                                    (svg-tag-make tag :face 'font-lock-comment-face
-                                                  :margin 0 :beg 1 :end -1))))
-          ;; Active date (with or without day name, with or without time)
-          ;; (,(format "\\(<%s>\\)" date-re) .
-          ;;  ((lambda (tag)
-          ;;     (svg-tag-make tag :beg 1 :end -1 :margin 0))))
-          ;; (,(format "\\(<%s \\)%s>" date-re day-time-re) .
-          ;;  ((lambda (tag)
-          ;;     (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
-          ;; (,(format "<%s \\(%s>\\)" date-re day-time-re) .
-          ;;  ((lambda (tag)
-          ;;     (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
-          ;; ;; Inactive date  (with or without day name, with or without time)
-          ;; (,(format "\\(\\[%s\\]\\)" date-re) .
-          ;;  ((lambda (tag)
-          ;;     (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
-          ;; (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
-          ;;  ((lambda (tag)
-          ;;     (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
-          ;; (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
-          ;;  ((lambda (tag)
-          ;;     (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))
-          ;; ;; Progress
-          ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
-                                              (svg-progress-percent (substring tag 1 -2)))))
-          ("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag)
-                                            (svg-progress-count (substring tag 1 -1)))))
-          )
-        )
-  )
+;;           ;; Citation of the form [cite:@Knuth:1984] 
+;;           ("\\(\\[cite:@[A-Za-z]+:\\)" . ((lambda (tag)
+;;                                             (svg-tag-make tag
+;;                                                           :inverse t
+;;                                                           :beg 7 :end -1
+;;                                                           :crop-right t))))
+;;           ("\\[cite:@[A-Za-z]+:\\([0-9]+\\]\\)" . ((lambda (tag)
+;;                                                      (svg-tag-make tag
+;;                                                                    :end -1
+;;                                                                    :crop-left t))))
+;;           ;; Commands
+;;           ("{[0-9a-zA-Z- ]+?}" . ((lambda (tag)
+;;                                     (svg-tag-make tag :face 'font-lock-comment-face
+;;                                                   :margin 0 :beg 1 :end -1))))
+;;           ;; Active date (with or without day name, with or without time)
+;;           ;; (,(format "\\(<%s>\\)" date-re) .
+;;           ;;  ((lambda (tag)
+;;           ;;     (svg-tag-make tag :beg 1 :end -1 :margin 0))))
+;;           ;; (,(format "\\(<%s \\)%s>" date-re day-time-re) .
+;;           ;;  ((lambda (tag)
+;;           ;;     (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0))))
+;;           ;; (,(format "<%s \\(%s>\\)" date-re day-time-re) .
+;;           ;;  ((lambda (tag)
+;;           ;;     (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0))))
+;;           ;; ;; Inactive date  (with or without day name, with or without time)
+;;           ;; (,(format "\\(\\[%s\\]\\)" date-re) .
+;;           ;;  ((lambda (tag)
+;;           ;;     (svg-tag-make tag :beg 1 :end -1 :margin 0 :face 'org-date))))
+;;           ;; (,(format "\\(\\[%s \\)%s\\]" date-re day-time-re) .
+;;           ;;  ((lambda (tag)
+;;           ;;     (svg-tag-make tag :beg 1 :inverse nil :crop-right t :margin 0 :face 'org-date))))
+;;           ;; (,(format "\\[%s \\(%s\\]\\)" date-re day-time-re) .
+;;           ;;  ((lambda (tag)
+;;           ;;     (svg-tag-make tag :end -1 :inverse t :crop-left t :margin 0 :face 'org-date))))
+;;           ;; ;; Progress
+;;           ("\\(\\[[0-9]\\{1,3\\}%\\]\\)" . ((lambda (tag)
+;;                                               (svg-progress-percent (substring tag 1 -2)))))
+;;           ("\\(\\[[0-9]+/[0-9]+\\]\\)" . ((lambda (tag)
+;;                                             (svg-progress-count (substring tag 1 -1)))))
+;;           )
+;;         )
+;;   )
   
 ;; org-roam dependencies
 (use-package websocket
