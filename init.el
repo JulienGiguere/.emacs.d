@@ -24,24 +24,37 @@
   ;; Refreshes Emacs config
   (global-set-key (kbd "C-c e") (lambda () (interactive) (load-file "~/.emacs.d/init.el")))
 
-;; Hyprland specific config. - comment out  on other systems
-;; Function to copy text to the clipboard using wl-copy
-(defun my-wl-copy (text &optional push)
-  "Copy TEXT to the clipboard using wl-copy."
-  (let ((process (start-process "wl-copy" nil "wl-copy" "-f")))
-    (process-send-string process text)
-    (process-send-eof process)))
-;; Function to paste text from the clipboard using wl-paste
-(defun my-wl-paste ()
-  "Paste text from the clipboard using wl-paste."
-  (let ((output (shell-command-to-string "wl-paste -n")))
-    (if (string= output "")
-        nil
-      output)))
-;; Set the interprogram cut and paste functions
-(setq interprogram-cut-function 'my-wl-copy)
-(setq interprogram-paste-function 'my-wl-paste)
+;; ;; Hyprland specific config. - comment out  on other systems
+;; ;; Function to copy text to the clipboard using wl-copy
+;; (defun my-wl-copy (text &optional push)
+;;   "Copy TEXT to the clipboard using wl-copy."
+;;   (let ((process (start-process "wl-copy" nil "wl-copy" "-f")))
+;;     (process-send-string process text)
+;;     (process-send-eof process)
+;;     (accept-process-output process 0.1)))  ;; Wait a bit for the process to complete
+;; ;; Function to paste text from the clipboard using wl-paste
+;; (defun my-wl-paste ()
+;;   "Paste text from the clipboard using wl-paste."
+;;   (let ((output (shell-command-to-string "wl-paste -n")))
+;;     (if (string= output "")
+;;         nil
+;;       output)))
+;; ;; Set the interprogram cut and paste functions
+;; (setq interprogram-cut-function 'my-wl-copy)
+;; (setq interprogram-paste-function 'my-wl-paste)
 
+(defun paste-image-from-clipboard ()
+  "Paste an image from the clipboard as a file in the images/ folder."
+  (interactive)
+  (let* ((dir "./images/")  ;; Folder to save the image
+         (filename (concat dir (make-temp-name "img-") ".png")))
+    (unless (file-exists-p dir)
+      (make-directory dir))  ;; Create the images folder if it doesn't exist
+    (shell-command (concat "wl-paste --type image/png > " filename))  ;; Use wl-clipboard
+    (insert (concat "[[file:" filename "]]"))
+    (message "Image saved as %s" filename)))
+
+  (global-set-key (kbd "C-c p") 'paste-image-from-clipboard)
 
   ;;Renders Images inline of an org file
   (defun do-org-show-all-inline-images ()
@@ -54,6 +67,9 @@
                      'comment-region)
   (global-set-key (kbd "C-c u")
                      'uncomment-region)
+
+  (global-set-key (kbd "C-c l") 'replace-string)
+
 
 ;; Write backups to ~/.emacs.d/backup/ to no clutter working directories
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
@@ -103,8 +119,8 @@
 
 ;; Set the default font
 (set-face-attribute 'default nil
-                    :family "Fira Code Retina"
-                    :height 108)
+                    :family "Iosevka"
+                    :height 130)
 
 ;; Set color for selected region
 (set-face-attribute 'region nil
@@ -523,7 +539,7 @@
 (require 'org-roam-export)
 (setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
 (add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
-(setq org-latex-toc-command "\\tableofcontents \\clearpage")
+(setq org-latex-toc-command "\\tableofcontents  \\clearpage")
 (define-key global-map (kbd "C-c n e") #'org-latex-export-to-pdf)
 
 
@@ -570,17 +586,17 @@
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
 ;; Chatgpt
-(use-package chatgpt-shell
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
-  (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
-  (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
-  (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
-  (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
-  (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
-  (setq chatgpt-shell-openai-key
-        (auth-source-pick-first-password :host "api.openai.com")))
+;; (use-package chatgpt-shell
+;;   :ensure t
+;;   :config
+;;   (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
+;;   (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
+;;   (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
+;;   (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
+;;   (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
+;;   (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
+;;   (setq chatgpt-shell-openai-key
+;;         (auth-source-pick-first-password :host "api.openai.com")))
 
 ;; helm
 (use-package helm
