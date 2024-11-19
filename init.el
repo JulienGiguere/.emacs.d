@@ -13,35 +13,25 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(chatgpt-shell-model-versions
-   '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
+  '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
  '(custom-enabled-themes '(julien))
  '(custom-safe-themes
-   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b" "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
+  '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b" "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
+ '(elcord-display-buffer-details nil)
+ '(elcord-display-elapsed nil)
+ '(elcord-editor-icon "emacs_icon")
+ '(elcord-icon-base
+  "https://raw.githubusercontent.com/Mstrodl/elcord/master/icons/")
+ '(elcord-idle-message "Compiling thoughts...")
+ '(elcord-idle-timer 900)
+ '(elcord-quiet t)
+ '(elcord-refresh-rate 5)
  '(package-selected-packages
-   '(xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+  '(pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal elcord flymake-yamllint lsp-ui lsp-java request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
   (global-set-key (kbd "C-c e") (lambda () (interactive) (load-file "~/.emacs.d/init.el")))
-
-;; ;; Hyprland specific config. - comment out  on other systems
-;; ;; Function to copy text to the clipboard using wl-copy
-;; (defun my-wl-copy (text &optional push)
-;;   "Copy TEXT to the clipboard using wl-copy."
-;;   (let ((process (start-process "wl-copy" nil "wl-copy" "-f")))
-;;     (process-send-string process text)
-;;     (process-send-eof process)
-;;     (accept-process-output process 0.1)))  ;; Wait a bit for the process to complete
-;; ;; Function to paste text from the clipboard using wl-paste
-;; (defun my-wl-paste ()
-;;   "Paste text from the clipboard using wl-paste."
-;;   (let ((output (shell-command-to-string "wl-paste -n")))
-;;     (if (string= output "")
-;;         nil
-;;       output)))
-;; ;; Set the interprogram cut and paste functions
-;; (setq interprogram-cut-function 'my-wl-copy)
-;; (setq interprogram-paste-function 'my-wl-paste)
 
 (defun paste-image-from-clipboard ()
   "Paste an image from the clipboard as a file in the images/ folder."
@@ -83,6 +73,10 @@
 (add-hook 'text-mode-hook 'visual-line-mode)
 (global-set-key (kbd "C-c w w") 'visual-line-mode)
 
+
+;;Discord Rich Presence
+(require 'elcord)
+(elcord-mode)
 
 ;; Personnal Projects
 ;;Dbus
@@ -338,6 +332,7 @@
 (use-package wikinforg
   :ensure t)
 
+(global-set-key (kbd "C-c n w") 'wikinforg)
 
 ;;Identation
 (setq-default indent-tabs-mode nil)
@@ -399,10 +394,17 @@
 (org-babel-do-load-languages
 'org-babel-load-languages
 '((shell . t)
+  (java . t)
   (gnuplot . t)))
 
 (setq org-todo-keywords
   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "LOOP(l)" "DONE(d)")))
+
+;; Org Reveal
+(require 'org-re-reveal)
+(setq org-re-reveal-root "file:///home/julien/emacs/reveal.js-master")
+
+(global-set-key (kbd "C-c n r") 'org-re-reveal-export-to-html)
 
 ;; Org svg
 (defun svg-progress-percent (value)
@@ -539,7 +541,7 @@
 (require 'org-roam-export)
 (setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
 (add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
-(setq org-latex-toc-command "\\tableofcontents  \\clearpage")
+(setq org-latex-toc-command "\\tableofcontents  \\clearpa ge")
 (define-key global-map (kbd "C-c n e") #'org-latex-export-to-pdf)
 
 
@@ -547,6 +549,8 @@
 (define-key global-map (kbd "<f12>") #'org-transclusion-add)
 (define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
 (add-hook 'org-mode-hook 'org-transclusion-mode)
+
+(add-hook 'yaml-mode-hook 'flymake-yamllint-setup)
 
 ;; LSP - InteliSense
 (when (cl-find-if-not #'package-installed-p package-selected-packages)
@@ -578,6 +582,18 @@
   :custom
   (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
 
+(use-package lsp-java
+  :after lsp-mode
+  :if (executable-find "mvn")
+  :init
+  (use-package request :defer t)
+  :custom
+  (lsp-java-server-install-dir (expand-file-name "~/.emacs.d/eclipse.jdt.ls/server/"))
+  (lsp-java-workspace-dir (expand-file-name "~/.emacs.d/eclipse.jdt.ls/workspace/")))
+
+(require 'lsp-java)
+(add-hook 'java-mode-hook #'lsp)
+  
 ;; Restclient
 (use-package restclient
        :ensure t)
@@ -644,6 +660,8 @@
    (setq company-minimum-prefix-length 3)
    (global-company-mode 1))
 
+(use-package dap-java :ensure nil)
+  
 ;; Auto closing pairs of characters
 (electric-pair-mode 1)
 
