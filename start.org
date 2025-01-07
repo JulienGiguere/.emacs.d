@@ -7,9 +7,6 @@
 #  ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝
 #
 
-#+begin_src 
-#+end_src
-
 [[id:4e24e223-f5b4-4156-9884-df7c0c688b24][ETS]] 
 
 [[https://calendar.google.com/calendar/u/0/r/week][Calendrier]]
@@ -17,11 +14,8 @@
 [[https://portail.etsmtl.ca/home][Mon ÉTS]]
 
 * TODO
-** WAIT Carte Étudiante + Photo
 ** WAIT Assurance
 ** WAIT Payment
-** Portails
-*** Interface
 **  Organisation
 *** Calendrier
 *** Plan
@@ -34,9 +28,22 @@
 ** Config
 *** Screen settings
 *** Projecting
-*** Screenshot
 *** Colors and background colors of waybar options menus
-** LinkedIn
+*** Phone integration
+**** File Transfer
+- ADB Android debug bridge
+  android-tools
+- KDE Connect
+  kdeconnect
+**** Mirroring
+- scrcpy
+- vysor
+**** Notifications
+- kdeconnect
+- GSConnect
+**** Orgzly
+**** Termux
+*** Emacs
 
 * Notes
 #+transclude: [[id:e8db57c3-774e-47c6-bd7c-7d06e4ac9a86][Notes]]

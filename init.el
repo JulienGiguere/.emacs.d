@@ -12,22 +12,16 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(chatgpt-shell-model-versions
-  '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
  '(custom-enabled-themes '(julien))
  '(custom-safe-themes
   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b" "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
- '(elcord-display-buffer-details nil)
- '(elcord-display-elapsed nil)
- '(elcord-editor-icon "emacs_icon")
- '(elcord-icon-base
-  "https://raw.githubusercontent.com/Mstrodl/elcord/master/icons/")
- '(elcord-idle-message "Compiling thoughts...")
- '(elcord-idle-timer 900)
- '(elcord-quiet t)
- '(elcord-refresh-rate 5)
  '(package-selected-packages
-  '(pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal elcord flymake-yamllint lsp-ui lsp-java request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell casual-dired gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired lsp-mode yasnippet lsp-treemacs helm-lsp projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+  '(eglot-java corfu eglot pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal flymake-yamllint request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired yasnippet
+   ;; lsp-mode
+   ;; lsp-ui lsp-java
+   ;; lsp-treemacs
+   ;; helm-lsp
+   projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
@@ -75,8 +69,8 @@
 
 
 ;;Discord Rich Presence
-(require 'elcord)
-(elcord-mode)
+;(require 'elcord)
+;(elcord-mode)
 
 ;; Personnal Projects
 ;;Dbus
@@ -160,29 +154,29 @@
 			                           (artist-mode)))
 
 ;; Spellcheck - flyspell - Hunspell
-(setq ispell-program-name "hunspell")
+;;(setq ispell-program-name "hunspell")
 
-(setq ispell-local-dictionary-alist
-      '(("en_CA" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_CA") nil utf-8)
-        ("fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_FR") nil utf-8)
-       ;; ("en_CA+fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_CA,fr_FR") nil utf-8) ;; Bilingual dict. not working as intended.
-  )) 
+;; (setq ispell-local-dictionary-alist
+;;       '(("en_CA" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_CA") nil utf-8)
+;;         ("fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "fr_FR") nil utf-8)
+;;        ;; ("en_CA+fr_FR" "[[:alpha:]]" "[^[:alpha:]]" "[']" nil ("-d" "en_CA,fr_FR") nil utf-8) ;; Bilingual dict. not working as intended.
+;;   )) 
 
-(setq ispell-dictionary "en_CA")
+;; (setq ispell-dictionary "en_CA")
 
-(defun my-toggle-dictionary ()
-  "Toggle between English (Canadian) and French"  ;;, and bilingual fr-en dictionary."
-  (interactive)
-  (let ((current-dict (or ispell-local-dictionary ispell-dictionary)))
-   (ispell-change-dictionary (if (string= current-dict "en_CA") "fr_FR" "en_CA")))
-   ;;(ispell-change-dictionary (if (string= current-dict "en_CA") "fr_FR" (if (string= current-dict "fr_FR") "en_CA+fr_FR" "en_CA")))) ;; Bilingual dict. not working as intended.
-    (message "Switched to %s" (or ispell-local-dictionary ispell-dictionary)))
+;; (defun my-toggle-dictionary ()
+;;   "Toggle between English (Canadian) and French"  ;;, and bilingual fr-en dictionary."
+;;   (interactive)
+;;   (let ((current-dict (or ispell-local-dictionary ispell-dictionary)))
+;;    (ispell-change-dictionary (if (string= current-dict "en_CA") "fr_FR" "en_CA")))
+;;    ;;(ispell-change-dictionary (if (string= current-dict "en_CA") "fr_FR" (if (string= current-dict "fr_FR") "en_CA+fr_FR" "en_CA")))) ;; Bilingual dict. not working as intended.
+;;     (message "Switched to %s" (or ispell-local-dictionary ispell-dictionary)))
 
-(global-set-key (kbd "C-c f") 'flyspell-mode)
-(global-set-key (kbd "C-c t") 'my-toggle-dictionary)
-(global-set-key (kbd "C-c r") 'flyspell-region)
-(global-set-key (kbd "M-p") 'flyspell-check-previous-highlighted-word)
-(global-set-key (kbd "M-n") 'Flyspell-Goto-next-error)
+;; (global-set-key (kbd "C-c f") 'flyspell-mode)
+;; (global-set-key (kbd "C-c t") 'my-toggle-dictionary)
+;; (global-set-key (kbd "C-c r") 'flyspell-region)
+;; (global-set-key (kbd "M-p") 'flyspell-check-previous-highlighted-word)
+;; (global-set-key (kbd "M-n") 'Flyspell-Goto-next-error)
 
 ;; (dolist (hook '(org-mode-hook))
 ;;   (add-hook hook (lambda () (flyspell-mode 1))))
@@ -213,9 +207,9 @@
 :config
 (which-key-mode))
 
-(use-package casual-dired
-  :ensure t
-  :bind (:map dired-mode-map ("C-x o" . 'casual-dired-tmenu)))
+;;(use-package casual-dired
+;;  :ensure t
+;;  :bind (:map dired-mode-map ("C-x o" . 'casual-dired-tmenu)))
 
 ;; Treemacs -Only using the icons from treemacs into dired
 (use-package treemacs
@@ -401,8 +395,8 @@
   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "LOOP(l)" "DONE(d)")))
 
 ;; Org Reveal
-(require 'org-re-reveal)
-(setq org-re-reveal-root "file:///home/julien/emacs/reveal.js-master")
+;;(require 'org-re-reveal)
+;;(setq org-re-reveal-root "file:///home/julien/emacs/reveal.js-master")
 
 (global-set-key (kbd "C-c n r") 'org-re-reveal-export-to-html)
 
@@ -553,46 +547,89 @@
 (add-hook 'yaml-mode-hook 'flymake-yamllint-setup)
 
 ;; LSP - InteliSense
-(when (cl-find-if-not #'package-installed-p package-selected-packages)
-  (package-refresh-contents)
-  (mapc #'package-install package-selected-packages))
-;;(helm-mode)
-(require 'helm-xref)
-;;(define-key global-map [remap find-file] #'helm-find-files)
-;;(define-key global-map [remap execute-extended-command] #'helm-M-x)
-;;(define-key global-map [remap switch-to-buffer] #'helm-mini)
-(which-key-mode)
-(add-hook 'prog-mode-hook #'lsp)
-;; (add-hook 'prog-mode-hook
-;;           (lambda ()
-;;             (unless (derived-mode-p 'rustic-mode)
-;;               (add-hook 'prog-mode-hook
-;;                         #'lsp t t))))
-(setq gc-cons-threshold (* 100 1024 1024)
-      read-process-output-max (* 1024 1024)
-      company-idle-delay 0.0
-      company-minimum-prefix-length 1
-      create-lockfiles nil) ;; lock files will kill `npm start'
-(with-eval-after-load 'lsp-mode
-  (require 'dap-chrome)
-  (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
-
-(setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
-(use-package rustic
+(use-package eglot
+  :ensure t
+  :hook ((( ;; clojure-mode clojurec-mode clojurescript-mode
+            java-mode ;; scala-mode
+  )
+          . eglot-ensure)
+         ((cider-mode eglot-managed-mode) . eglot-disable-in-cider))
+  :preface
+  (defun eglot-disable-in-cider ()
+    (when (eglot-managed-p)
+      (if (bound-and-true-p cider-mode)
+          (progn
+            (remove-hook 'completion-at-point-functions 'eglot-completion-at-point t)
+            (remove-hook 'xref-backend-functions 'eglot-xref-backend t))
+        (add-hook 'completion-at-point-functions 'eglot-completion-at-point nil t)
+        (add-hook 'xref-backend-functions 'eglot-xref-backend nil t))))
   :custom
-  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+  (eglot-autoshutdown t)
+  (eglot-events-buffer-size 0)
+  (eglot-extend-to-xref nil)
+  (eglot-ignored-server-capabilities
+   '(:hoverProvider
+     :documentHighlightProvider
+     :documentFormattingProvider
+     :documentRangeFormattingProvider
+     :documentOnTypeFormattingProvider
+     :colorProvider
+     :foldingRangeProvider))
+  (eglot-stay-out-of '(yasnippet)))
+;; (when (cl-find-if-not #'package-installed-p package-selected-packages)
+;;   (package-refresh-contents)
+;;   (mapc #'package-install package-selected-packages))
+;; ;;(helm-mode)
+;; (require 'helm-xref)
+;; ;;(define-key global-map [remap find-file] #'helm-find-files)
+;; ;;(define-key global-map [remap execute-extended-command] #'helm-M-x)
+;; ;;(define-key global-map [remap switch-to-buffer] #'helm-mini)
+;; (which-key-mode)
+;; (add-hook 'prog-mode-hook #'lsp)
+;; ;; (add-hook 'prog-mode-hook
+;; ;;           (lambda ()
+;; ;;             (unless (derived-mode-p 'rustic-mode)
+;; ;;               (add-hook 'prog-mode-hook
+;; ;;                         #'lsp t t))))
+;; (setq gc-cons-threshold (* 100 1024 1024)
+;;       read-process-output-max (* 1024 1024)
+;;       company-idle-delay 0.0
+;;       company-minimum-prefix-length 1
+;;       create-lockfiles nil) ;; lock files will kill `npm start'
+;; (with-eval-after-load 'lsp-mode
+;;   (require 'dap-chrome)
+;;   (add-hook 'lsp-mode-hook #'lsp-enable-which-key-integration))
 
-(use-package lsp-java
-  :after lsp-mode
-  :if (executable-find "mvn")
-  :init
-  (use-package request :defer t)
-  :custom
-  (lsp-java-server-install-dir (expand-file-name "~/.emacs.d/eclipse.jdt.ls/server/"))
-  (lsp-java-workspace-dir (expand-file-name "~/.emacs.d/eclipse.jdt.ls/workspace/")))
+;; (setq rustic-analyzer-command '("~/.cargo/bin/rust-analyzer"))
+;; (use-package rustic
+;;   :custom
+;;   (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
 
-(require 'lsp-java)
-(add-hook 'java-mode-hook #'lsp)
+;; (use-package lsp-java
+;;   :ensure t
+;;   :demand t
+;;   :after lsp-mode
+;;   ;; :when (and openjdk-11-path
+;;   ;;            (file-exists-p openjdk-11-path))
+;;   ;; :custom
+;;   ;; (lsp-java-java-path openjdk-11-path)
+;;   )
+
+;; (use-package lsp-java
+;;   :no-require
+;;   :hook (java-mode . lsp))
+  
+;; (use-package lsp-java
+;;   :after lsp-mode
+;;   :if (executable-find "mvn")
+;;   :init
+;;   (use-package request :defer t)
+;;   :custom
+;;   (lsp-java-server-install-dir (expand-file-name "~/.emacs.d/eclipse.jdt.ls/server/"))
+;;   (lsp-java-workspace-dir (expand-file-name "~/.emacs.d/eclipse.jdt.ls/workspace/")))
+
+;; (require 'lsp-java)
+;; (add-hook 'java-mode-hook #'lsp)
   
 ;; Restclient
 (use-package restclient
@@ -622,13 +659,15 @@
 (use-package avy
     :ensure t)
 
-;; ivy
+;; ivy -vertico is good apparently-
 (use-package ivy
-    :ensure t
-    :config
-    (ivy-mode 1)
-    (setq ivy-use-virtual-buffers t)
-    (setq ivy-count-format "(%d/%d) "))
+  :ensure t
+  :init
+  (ivy-mode 1)
+  :config
+  (setq ivy-use-virtual-buffers t
+        ivy-count-format "(%d/%d) "
+        enable-recursive-minibuffers t))
 
 ;; expand-region
 (use-package expand-region
@@ -666,22 +705,27 @@
 (electric-pair-mode 1)
 
 ;; Example of auto insert code in a c or c++ file.
-  (eval-after-load 'autoinsert
-    '(define-auto-insert
-       '("\\.\\(CC?\\|cc\\|cxx\\|cpp\\|c++\\)\\'" . "C++ skeleton")
-       '("Short description: "
-	 "/*" \n
-	 (file-name-nondirectory (buffer-file-name))
-	 " -- " str \n
-	 "  Date -- "(format-time-string "%Y-%m-%d") \n
-	 "  Auteur(s) -- "
-	 " */" > \n \n
-	 "#include <iostream>" \n \n
-	 "using namespace std;" \n \n
-	 "main() " 
-	 "{" \n
-	 > _ \n
-	 "}" > \n)))
+;;  (eval-after-load 'autoinsert
+;;    '(define-auto-insert
+;;       '("\\.\\(CC?\\|cc\\|cxx\\|cpp\\|c++\\)\\'" . "C++ skeleton")
+;;       '("Short description: "
+;;	 "/*" \n
+;;	 (file-name-nondirectory (buffer-file-name))
+;;	 " -- " str \n
+;;	 "  Date -- "(format-time-string "%Y-%m-%d") \n
+;;	 "  Auteur(s) -- "
+;;	 " */" > \n \n
+;;	 "#include <iostream>" \n \n
+;;	 "using namespace std;" \n \n
+;;	 "main() " 
+;;	 "{" \n
+;;	 > _ \n
+;;	 "}" > \n)))
+;;(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
