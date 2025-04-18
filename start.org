@@ -14,8 +14,6 @@
 [[https://portail.etsmtl.ca/home][Mon ÉTS]]
 
 * TODO
-** WAIT Assurance
-** WAIT Payment
 **  Organisation
 *** Calendrier
 *** Plan

@@ -12,16 +12,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(chatgpt-shell-model-versions
+  '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
  '(custom-enabled-themes '(julien))
  '(custom-safe-themes
   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b" "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
+ '(org-agenda-files
+  '("~/Documents/RoamNotes/20240429181824-ets.org" "/home/julien/Documents/RoamNotes/ets20250107084152-gia400.org" "/home/julien/Documents/RoamNotes/ets20250107084142-mat145.org" "/home/julien/Documents/RoamNotes/ets20250107084129-phy335.org" "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
  '(package-selected-packages
-  '(eglot-java corfu eglot pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal flymake-yamllint request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired yasnippet
-   ;; lsp-mode
-   ;; lsp-ui lsp-java
-   ;; lsp-treemacs
-   ;; helm-lsp
-   projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+  '(eglot-java corfu eglot pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal flymake-yamllint request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired yasnippet projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
@@ -52,9 +51,10 @@
   (global-set-key (kbd "C-c u")
                      'uncomment-region)
 
-  (global-set-key (kbd "C-c l") 'replace-string)
+  (global-set-key (kbd "C-c r") 'replace-string)
 
-
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  
 ;; Write backups to ~/.emacs.d/backup/ to no clutter working directories
 (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
       backup-by-copying      t  ; Don't de-link hard links
@@ -66,6 +66,75 @@
 ;;Word Wrap
 (add-hook 'text-mode-hook 'visual-line-mode)
 (global-set-key (kbd "C-c w w") 'visual-line-mode)
+
+
+;; ASCII-HEX conversion
+(defun my/hex-decode-string (hex-string)
+  (let ((res nil))
+    (dotimes (i (/ (length hex-string) 2) (apply #'concat (reverse res)))
+      (let ((hex-byte (substring hex-string (* 2 i) (* 2 (+ i 1)))))
+        (push (format "%c" (string-to-number hex-byte 16)) res)))))
+
+(defun my/hex-encode-string (ascii-string)
+  (let ((res nil))
+    (dotimes (i (length ascii-string) (apply #'concat (reverse res)))
+      (let ((ascii-char (substring ascii-string i  (+ i 1))))
+        (push (format "%02x" (string-to-char ascii-char)) res)))))
+
+(defun my/hex-decode-region (start end) 
+  "Decode a hex string in the selected region."
+  (interactive "r")
+  (save-excursion
+    (let* ((decoded-text 
+            (my/hex-decode-string
+             (buffer-substring start end))))
+      (delete-region start end)
+      (insert decoded-text))))
+
+(defun my/hex-encode-region (start end) 
+  "Encode a hex string in the selected region."
+  (interactive "r")
+  (save-excursion
+    (let* ((encoded-text 
+            (my/hex-encode-string
+             (buffer-substring start end))))
+      (delete-region start end)
+      (insert encoded-text))))
+
+;; uuencode
+;; (setq uuencodeHash
+;;   #s(hash-table
+;;      size 30
+;;      test equal
+;;      data (
+;;            "M" 45
+;;            "N" 46
+;;            "O" 47 )))
+(setq uuencodeHash (make-hash-table :test 'equal))
+
+(mapc (lambda (pair) (puthash (car pair) (cdr pair) uuencodeHash))
+      '(("'" . 0) ("!" . 1) ("\"" . 2) ("#" . 3) ("$" . 4) ("%" . 5) ("&" . 6) 
+        ("'" . 7) ("(" . 8) ("*" . 9) ("+" . 10) ("," . 11) ("-" . 12) ("." . 13) ("/" . 14) 
+        ("0" . 16) ("1" . 17) ("2" . 18) ("3" . 19) ("4" . 20) ("5" . 21) ("6" . 22) ("7" . 23) 
+        ("8" . 24) ("9" . 25) (":" . 26) (";" . 27) ("<" . 28) ("=" . 29) (">" . 30) ("?" . 31) 
+        ("@" . 32) ("A" . 33) ("B" . 34) ("C" . 35) ("D" . 36) ("E" . 37) ("F" . 38) ("G" . 39) 
+        ("H" . 40) ("I" . 41) ("J" . 42) ("K" . 43) ("L" . 44) ("M" . 45) ("N" . 46) ("O" . 47) 
+        ("P" . 48) ("Q" . 49) ("R" . 50) ("S" . 51) ("T" . 52) ("U" . 53) ("V" . 54) ("W" . 55) 
+        ("X" . 56) ("Y" . 57) ("Z" . 58) ("[" . 59) ("\\" . 60) ("]" . 61) ("^" . 62) ("_" . 63)))
+
+
+  ;; test
+(gethash "M" uuencodeHash) ;45
+
+;; has worked but the push of or with default 0 seems to break it.
+(defun my/uu-decode-string (hex-string)
+  "Decodes a uuencoded string using the uuencode hash table, returning a list of numbers."
+  (let ((res nil))
+    (dotimes (i (length hex-string))
+      (let ((char-string (substring hex-string i (1+ i))))
+        (push (or (gethash char-string uuencodeHash) 0) res))) ;; 0 for missing values
+   ;; (reverse res)
+  )) ;; Ensure correct order
 
 
 ;;Discord Rich Presence
