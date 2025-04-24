@@ -20,7 +20,7 @@
  '(org-agenda-files
   '("~/Documents/RoamNotes/20240429181824-ets.org" "/home/julien/Documents/RoamNotes/ets20250107084152-gia400.org" "/home/julien/Documents/RoamNotes/ets20250107084142-mat145.org" "/home/julien/Documents/RoamNotes/ets20250107084129-phy335.org" "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
  '(package-selected-packages
-  '(eglot-java corfu eglot pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal flymake-yamllint request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete drag-stuff company-restclient all-the-icons-dired yasnippet projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+  '(eglot-java corfu eglot pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal flymake-yamllint request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete company-restclient all-the-icons-dired yasnippet projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
@@ -404,6 +404,9 @@
 
 (setq js-indent-level 2)
 
+(drag-stuff-global-mode 1)
+(drag-stuff-define-keys )
+
 ;;defun custom-tab-mode-hook ()
 ;;  (setq tab-width 2))
 ;;add-hook 'prog-mode-hook #'jpk/c-mode-common-hook)
@@ -419,13 +422,6 @@
 ;;     (highlight-indent-guides--highlighter-default level top 'bitmap)))
 
 ;; (setq highlight-indent-guides-highlighter-function 'my-highlighter)
-
-;;drag-stuff
-(use-package drag-stuff
-  :ensure t
-  :config
-  (drag-stuff-global-mode 1)
-  (drag-stuff-define-keys))
 
 (when (require 'paredit nil t)
   (dolist (map (list lisp-mode-map emacs-lisp-mode-map))
@@ -458,8 +454,12 @@
 'org-babel-load-languages
 '((shell . t)
   (java . t)
+  (plantuml . t)
   (gnuplot . t)))
 
+
+(setq org-plantuml-jar-path "~/.emacs.d/plantuml/plantuml.jar")
+  
 (setq org-todo-keywords
   '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "PROJ(p)" "LOOP(l)" "DONE(d)")))
 
