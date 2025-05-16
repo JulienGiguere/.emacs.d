@@ -13,35 +13,13 @@
 [[https://outlook.office.com/mail/][Outlook ETS]]
 [[https://portail.etsmtl.ca/home][Mon ÉTS]]
 
+
 * TODO
-**  Organisation
-*** Calendrier
-*** Plan
-*** Routine
 ** Cours
-*** Plans de cours
+*** Plans de cours 26 mai
 *** Calendrier examens
-*** PlantUML
-*** Latex
-** Config
-*** Screen settings
-*** Projecting
-*** Colors and background colors of waybar options menus
-*** Phone integration
-**** File Transfer
-- ADB Android debug bridge
-  android-tools
-- KDE Connect
-  kdeconnect
-**** Mirroring
-- scrcpy
-- vysor
-**** Notifications
-- kdeconnect
-- GSConnect
-**** Orgzly
-**** Termux
-*** Emacs
+
+
 
 * Notes
 #+transclude: [[id:e8db57c3-774e-47c6-bd7c-7d06e4ac9a86][Notes]]

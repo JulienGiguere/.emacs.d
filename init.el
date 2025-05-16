@@ -13,14 +13,23 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(chatgpt-shell-model-versions
-  '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview" "gpt-4-0613" "gpt-4"))
+   '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview"
+     "gpt-4-0613" "gpt-4"))
  '(custom-enabled-themes '(julien))
  '(custom-safe-themes
-  '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b" "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31" "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80" "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce" "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e" default))
+   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b"
+     "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31"
+     "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80"
+     "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce"
+     "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e"
+     default))
  '(org-agenda-files
-  '("~/Documents/RoamNotes/20240429181824-ets.org" "/home/julien/Documents/RoamNotes/ets20250107084152-gia400.org" "/home/julien/Documents/RoamNotes/ets20250107084142-mat145.org" "/home/julien/Documents/RoamNotes/ets20250107084129-phy335.org" "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
- '(package-selected-packages
-  '(eglot-java corfu eglot pandoc-mode pandoc crdt oer-reveal org-re-reveal-ref org-re-reveal-citeproc org-re-reveal flymake-yamllint request xclip nix-mode nixos-options svelte-mode gnuplot-mode gnuplot pdf-tools wikinforg ob-chatgpt-shell gdscript-mode rustic org-transclusion paredit expand-region svg-lib svg-tag-mode sideline-blame git-blamed markdown-mode simple-httpd websocket org-roam helm yaml-mode which-key vue-mode undo-tree try treemacs-tab-bar treemacs-projectile treemacs-persp treemacs-magit treemacs-icons-dired treemacs-evil swiper rust-mode php-mode org-bullets multiple-cursors image-dired+ auto-complete company-restclient all-the-icons-dired yasnippet projectile hydra flycheck company avy which-key helm-xref dap-mode zenburn-theme json-mode)))
+   '("~/Documents/RoamNotes/20240429181824-ets.org"
+     "/home/julien/Documents/RoamNotes/ets20250107084152-gia400.org"
+     "/home/julien/Documents/RoamNotes/ets20250107084142-mat145.org"
+     "/home/julien/Documents/RoamNotes/ets20250107084129-phy335.org"
+     "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
+ '(package-selected-packages nil))
 
 ;; Custom Commands
   ;; Refreshes Emacs config
@@ -404,8 +413,8 @@
 
 (setq js-indent-level 2)
 
-(drag-stuff-global-mode 1)
-(drag-stuff-define-keys )
+;; (drag-stuff-global-mode 1)
+;; (drag-stuff-define-keys )
 
 ;;defun custom-tab-mode-hook ()
 ;;  (setq tab-width 2))
@@ -617,9 +626,9 @@
 
 
 
-(define-key global-map (kbd "<f12>") #'org-transclusion-add)
-(define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
-(add-hook 'org-mode-hook 'org-transclusion-mode)
+;; (define-key global-map (kbd "<f12>") #'org-transclusion-add)
+;; (define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
+;; (add-hook 'org-mode-hook 'org-transclusion-mode)
 
 (add-hook 'yaml-mode-hook 'flymake-yamllint-setup)
 
