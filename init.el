@@ -38,7 +38,7 @@
     (message "Image saved as %s" filename)))
 
   (global-set-key (kbd "C-c p") 'paste-image-from-clipboard)
-
+  (setq vc-follow-symlinks t)
   ;;Renders Images inline of an org file
   (defun do-org-show-all-inline-images ()
     (interactive)
@@ -598,9 +598,17 @@
   :config
   (require 'org-roam-protocol)
   (org-roam-setup))
-(add-to-list 'load-path "~/.emacs.d/gitclone/org-roam-ui/")
-(load-library "org-roam-ui")
+;; (add-to-list 'load-path "~/.emacs.d/gitclone/org-roam-ui/")
+;; (load-library "org-roam-ui")
 
+(use-package org
+  :commands (org-table-iterate-buffer-tables org-toggle-pretty-entities))
+
+(use-package org-roam-ui
+  :commands (orui-open orui-node-local orui-node-zoom orui-sync-theme))
+
+(setq native-comp-async-report-warnings-errors nil)
+  
 (require 'org-roam-export)
 (setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
 (add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
@@ -768,8 +776,17 @@
    (setq company-minimum-prefix-length 3)
    (global-company-mode 1))
 
-(use-package dap-java :ensure nil)
-  
+;; (use-package dap-java
+;;   :ensure t
+;;   :after (lsp-java)
+;;   :config
+;;   (require 'dap-java))
+
+;;;; GOOGLE TRANSLATE EL
+  ;;; translate at point.
+
+;;; Dired preview
+;;; archive mode ...
 ;; Auto closing pairs of characters
 (electric-pair-mode 1)
 
