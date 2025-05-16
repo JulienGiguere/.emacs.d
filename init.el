@@ -31,6 +31,9 @@
      "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
  '(package-selected-packages nil))
 
+(setq use-package-always-ensure nil)
+(setq use-package-ensure-function 'ignore)
+
 ;; Custom Commands
   ;; Refreshes Emacs config
   (global-set-key (kbd "C-c e") (lambda () (interactive) (load-file "~/.emacs.d/init.el")))
@@ -46,7 +49,7 @@
     (insert (concat "[[file:" filename "]]"))
     (message "Image saved as %s" filename)))
 
-  (global-set-key (kbd "C-c p") 'paste-image-from-clipboard)
+  (global-set-key (kbd "C-c [") 'paste-image-from-clipboard)
   (setq vc-follow-symlinks t)
   ;;Renders Images inline of an org file
   (defun do-org-show-all-inline-images ()
@@ -725,17 +728,20 @@
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
 ;; Chatgpt
-;; (use-package chatgpt-shell
-;;   :ensure t
-;;   :config
-;;   (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
-;;   (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
-;;   (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
-;;   (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
-;;   (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
-;;   (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
-;;   (setq chatgpt-shell-openai-key
-;;         (auth-source-pick-first-password :host "api.openai.com")))
+(define-prefix-command 'chatgpt-prefix)
+(global-set-key (kbd "C-c p") 'chatgpt-prefix)
+(use-package chatgpt-shell
+  :ensure t
+  :config
+  (define-prefix-command 'chatgpt-prefix)
+  (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
+  (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
+  (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
+  (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
+  (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
+  (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
+  (setq chatgpt-shell-openai-key
+        (auth-source-pick-first-password :host "api.openai.com")))
 
 ;; helm
 (use-package helm
