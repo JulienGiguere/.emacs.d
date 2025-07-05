@@ -7,24 +7,13 @@
 #  ╚══════╝╚═╝     ╚═╝╚═╝  ╚═╝ ╚═════╝╚══════╝
 #
 
-[[id:4e24e223-f5b4-4156-9884-df7c0c688b24][ETS]] 
+| [[id:4e24e223-f5b4-4156-9884-df7c0c688b24][ETS]]        | Github      | LinkedIn |
+|------------+-------------+----------|
+| [[https://calendar.google.com/calendar/u/0/r/week][Calendrier]] | [[https://outlook.office.com/mail/][Outlook ETS]] | [[https://portail.etsmtl.ca/home][Mon ÉTS]]  |
 
-[[https://calendar.google.com/calendar/u/0/r/week][Calendrier]]
-[[https://outlook.office.com/mail/][Outlook ETS]]
-[[https://portail.etsmtl.ca/home][Mon ÉTS]]
-
-
-* TODO
-** Cours
-*** Plans de cours 26 mai
-*** Calendrier examens
-
-
-
-* Notes
-#+transclude: [[id:e8db57c3-774e-47c6-bd7c-7d06e4ac9a86][Notes]]
-
-* Config
-#+transclude: [[id:3fe1628f-c6f1-4857-9edd-56aaed4661d5][Configuration]]
-
-
+| [[https://github.com/ClubCedille][Cedille GitHub Links]]   | [[file:~/Documents/school/clubs/CEDILLE/][cedille folders]] |
+|------------------------+-----------------|
+| [[https://github.com/ClubCedille/k8s-cedille-production][k8s-cedille-production]] | [[file:~/Documents/school/clubs/CEDILLE/k8s-cedille-production/][prod]]            |
+| [[https://github.com/ClubCedille/k8s-shared][k8s-shared]]             | [[file:~/Documents/school/clubs/CEDILLE/k8s-shared/][shared]]          |
+| [[https://github.com/ClubCedille/k8s-management-v2][k8s-management-v2]]      | [[file:~/Documents/school/clubs/CEDILLE/k8s-management-v2/][management-v2]]   |
+| [[https://github.com/ClubCedille/Plateforme-Cedille][Plateforme-Cedille]]     | [[file:~/Documents/school/clubs/CEDILLE/Plateforme-Cedille/][platforme-wiki]]  |

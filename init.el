@@ -12,9 +12,6 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(chatgpt-shell-model-versions
-   '("gpt-4-0125-preview" "gpt-4-turbo-preview" "gpt-4-1106-preview"
-     "gpt-4-0613" "gpt-4"))
  '(custom-enabled-themes '(julien))
  '(custom-safe-themes
    '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b"
@@ -29,7 +26,13 @@
      "/home/julien/Documents/RoamNotes/ets20250107084142-mat145.org"
      "/home/julien/Documents/RoamNotes/ets20250107084129-phy335.org"
      "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
- '(package-selected-packages nil))
+ '(package-selected-packages
+   '(aider chatgpt-shell company crdt drag-stuff flycheck-yamllint gptel
+           helm lsp-java lsp-ui multiple-cursors nix-mode org-bullets
+           org-roam-ui restclient swiper tree-sitter-langs
+           treemacs-icons-dired treemacs-magit treemacs-persp
+           treemacs-projectile treemacs-tab-bar try tsc vterm
+           wikinforg yaml-mode)))
 
 (setq use-package-always-ensure nil)
 (setq use-package-ensure-function 'ignore)
@@ -165,7 +168,6 @@
 (require 'package)
     (add-to-list 'package-archives
 		 '("melpa"."https://melpa.org/packages/"))
-  (package-initialize)
     ;; Bootstrap use-package
     (unless (package-installed-p 'use-package)
 (package-refresh-contents)
@@ -624,7 +626,7 @@
 (require 'org-roam-export)
 (setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
 (add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
-(setq org-latex-toc-command "\\tableofcontents  \\clearpa ge")
+(setq org-latex-toc-command "\\tableofcontents  \\clearpage")
 (define-key global-map (kbd "C-c n e") #'org-latex-export-to-pdf)
 
 
@@ -728,20 +730,50 @@
 (add-to-list 'auto-mode-alist '("\\.http\\'" . restclient-mode))
 
 ;; Chatgpt
-(define-prefix-command 'chatgpt-prefix)
-(global-set-key (kbd "C-c p") 'chatgpt-prefix)
-(use-package chatgpt-shell
+;; (define-prefix-command 'chatgpt-prefix)
+;; (global-set-key (kbd "C-c p") 'chatgpt-prefix)
+;; (use-package chatgpt-shell
+;;   :ensure t
+;;   :config
+;;   (define-prefix-command 'chatgpt-prefix)
+;;   (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
+;;   (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
+;;   (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
+;;   (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
+;;   (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
+;;   (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
+;;   (setq chatgpt-shell-openai-key
+;;         (auth-source-pick-first-password :host "api.openai.com")))
+
+;; gpt.el
+(global-set-key (kbd "C-c p r") 'gptel-send-region)
+(global-set-key (kbd "C-c p b") 'gptel-send-buffer)
+(global-set-key (kbd "C-c p p") 'gptel)
+
+;; (use-package transient
+;;   :ensure t)
+
+;; aider.el
+(use-package aider
   :ensure t
+  :after transient
   :config
-  (define-prefix-command 'chatgpt-prefix)
-  (global-set-key (kbd "C-c p p") 'chatgpt-shell-prompt)
-  (global-set-key (kbd "C-c p e") 'chatgpt-shell-explain-code)
-  (global-set-key (kbd "C-c p r") 'chatgpt-shell-refactor-code)
-  (global-set-key (kbd "C-c p c") 'chatgpt-shell-proofread-region)
-  (global-set-key (kbd "C-c p t") 'chatgpt-shell-generate-unit-test) 
-  (global-set-key (kbd "C-c p q") 'chatgpt-shell-interrupt)
-  (setq chatgpt-shell-openai-key
-        (auth-source-pick-first-password :host "api.openai.com")))
+  ;; For latest claude sonnet model
+  (setq aider-args '("--model" "sonnet" "--no-auto-accept-architect"))
+  (setenv "ANTHROPIC_API_KEY" (auth-source-pick-credential :host "api.anthropic.com" :user "emacs-aider" :secret t)) 
+  ;; Or gemini model
+  ;; (setq aider-args '("--model" "gemini"))
+  ;; (setenv "GEMINI_API_KEY" <your-gemini-api-key>)
+  ;; Or chatgpt model
+  ;; (setq aider-args '("--model" "o4-mini"))
+  ;; (setenv "OPENAI_API_KEY" <your-openai-api-key>)
+  ;; Or use your personal config file
+  ;; (setq aider-args `("--config" ,(expand-file-name "~/.aider.conf.yml")))
+  ;; ;;
+  ;; Optional: Set a key binding for the transient menu
+  (global-set-key (kbd "C-c p a") 'aider-transient-menu) ;; for wider screen
+  ;; or use aider-transient-menu-2cols / aider-transient-menu-1col, for narrow screen
+  (aider-magit-setup-transients)) ;; add aider magit function to magit menu
 
 ;; helm
 (use-package helm
