@@ -36,6 +36,8 @@
 (package-refresh-contents)
 (add-to-list 'load-path "~/.emacs.d/elpa/")
 
+(add-hook 'before-save-hook 'delete-trailing-whitespace)
+
 (eval-when-compile
   (require 'use-package))
 
