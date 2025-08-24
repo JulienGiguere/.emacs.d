@@ -12,6 +12,70 @@
 (add-to-list 'package-archives
 	     '("melpa-stable" . "http://stable.melpa.org/packages/") t)
 
+(add-to-list 'load-path "~/.emacs.d/elpa/")
+
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-enabled-themes '(julien))
+ '(custom-safe-themes
+   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b"
+     "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31"
+     "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80"
+     "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce"
+     "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e"
+     default))
+ '(org-agenda-files
+   '("~/Documents/RoamNotes/20240429181824-ets.org"))
+ '(package-selected-packages
+   '(2048-game
+     aider
+     avy
+     chatgpt-shell
+     company
+     crdt
+     drag-stuff
+     flycheck-yamllint
+     flymake-yamllint
+     gptel
+     helm
+     ivy
+     json-mode
+     lsp-java
+     lsp-ui
+     magik8s
+     magit
+     multiple-cursors
+     nix-mode
+     org-bullets
+     org-roam-ui
+     projectile
+     restclient
+     simple-httpd
+     swiper
+     tree-sitter-langs
+     treemacs-icons-dired
+     treemacs-magit
+     treemacs-persp
+     treemacs-projectile
+     treemacs-tab-bar
+     treesit-auto
+     try
+     tsc
+     vterm
+     websocket
+     wikinforg
+     yaml
+     yaml-mode)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
+
 (setq my/package-list
       '(
         ;; adoc-mode
@@ -100,37 +164,3 @@
 
 (put 'narrow-to-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-enabled-themes '(julien))
- '(custom-safe-themes
-   '("b99846c178e46711cf33b628930915659c8b9848a47b085e1f91623a08e6cc4b"
-     "2eaf2917992a73b10838b0224c54042570eeb894f52e6dc4b98f9d109d9ebe31"
-     "e1bb83b1b09acfbc2806438f849d371d17e2b08cb3bd9f6a9cea71f08ca97f80"
-     "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce"
-     "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e"
-     default))
- '(org-agenda-files
-   '("~/Documents/RoamNotes/20240429181824-ets.org"
-     "/home/julien/Documents/RoamNotes/ets20250107084152-gia400.org"
-     "/home/julien/Documents/RoamNotes/ets20250107084142-mat145.org"
-     "/home/julien/Documents/RoamNotes/ets20250107084129-phy335.org"
-     "/home/julien/Documents/RoamNotes/ets20250107083026-log121.org"))
- '(package-selected-packages
-   '(2048-game aider avy chatgpt-shell company crdt drag-stuff
-               flycheck-yamllint gptel helm ivy json-mode lsp-java
-               lsp-ui magit multiple-cursors nix-mode org-bullets
-               org-roam-ui projectile restclient simple-httpd swiper
-               tree-sitter-langs treemacs-icons-dired treemacs-magit
-               treemacs-persp treemacs-projectile treemacs-tab-bar
-               treesit-auto try tsc vterm websocket wikinforg
-               yaml-mode)))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
