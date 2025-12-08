@@ -27,48 +27,23 @@
      "78c3ccacbd7bddb472bb0a4c6d1195b3046a2fd1d7eb94ba33c44103a57038ce"
      "8b8d09791e6774ed53203f578fd0a7e92af3548573efdaeaec096ee62459e67e"
      default))
- '(org-agenda-files
-   '("~/Documents/RoamNotes/20240429181824-ets.org"))
+ '(elcord-display-buffer-details nil)
+ '(elcord-display-elapsed nil)
+ '(elcord-idle-message "Out touching grass...")
+ '(elcord-idle-timer 36000000)
+ '(elcord-mode t nil (elcord))
+ '(elcord-use-major-mode-as-main-icon t)
+ '(org-agenda-files '("~/Documents/RoamNotes/20240429181824-ets.org"))
  '(package-selected-packages
-   '(2048-game
-     aider
-     avy
-     chatgpt-shell
-     company
-     crdt
-     drag-stuff
-     flycheck-yamllint
-     flymake-yamllint
-     gptel
-     helm
-     ivy
-     json-mode
-     lsp-java
-     lsp-ui
-     magik8s
-     magit
-     multiple-cursors
-     nix-mode
-     org-bullets
-     org-roam-ui
-     projectile
-     restclient
-     simple-httpd
-     swiper
-     tree-sitter-langs
-     treemacs-icons-dired
-     treemacs-magit
-     treemacs-persp
-     treemacs-projectile
-     treemacs-tab-bar
-     treesit-auto
-     try
-     tsc
-     vterm
-     websocket
-     wikinforg
-     yaml
-     yaml-mode)))
+   '(2048-game aider avy chatgpt-shell company crdt drag-stuff elcord
+               flycheck-yamllint flymake-yamllint gptel helm ivy
+               json-mode lsp-java lsp-ui lsp-yaml magik8s magit
+               multiple-cursors nix-mode org-bullets org-roam-ui
+               projectile pug-mode restclient simple-httpd swiper
+               tree-sitter-langs treemacs-icons-dired treemacs-magit
+               treemacs-persp treemacs-projectile treemacs-tab-bar
+               treesit-auto try tsc vterm vue-mode websocket wikinforg
+               wsd-mode yaml yaml-mode yaml-pro)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.

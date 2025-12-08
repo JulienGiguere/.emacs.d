@@ -11,9 +11,34 @@
 |------------+-------------+----------|
 | [[https://calendar.google.com/calendar/u/0/r/week][Calendrier]] | [[https://outlook.office.com/mail/][Outlook ETS]] | [[https://portail.etsmtl.ca/home][Mon ÉTS]]  |
 
+* CEDILLE
 | [[https://github.com/ClubCedille][Cedille GitHub Links]]   | [[file:~/Documents/school/clubs/CEDILLE/][cedille folders]] |
 |------------------------+-----------------|
 | [[https://github.com/ClubCedille/k8s-cedille-production][k8s-cedille-production]] | [[file:~/Documents/school/clubs/CEDILLE/k8s-cedille-production/][prod]]            |
 | [[https://github.com/ClubCedille/k8s-shared][k8s-shared]]             | [[file:~/Documents/school/clubs/CEDILLE/k8s-shared/][shared]]          |
 | [[https://github.com/ClubCedille/k8s-management-v2][k8s-management-v2]]      | [[file:~/Documents/school/clubs/CEDILLE/k8s-management-v2/][management-v2]]   |
 | [[https://github.com/ClubCedille/Plateforme-Cedille][Plateforme-Cedille]]     | [[file:~/Documents/school/clubs/CEDILLE/Plateforme-Cedille/][platforme-wiki]]  |
+
+** Document de vision
+
+
+** Beer & Learn
+
+* AEETS
+Teams
+poste ouvert sur le CA d'entreprise AEETS
+
+** admweb - Wix
+PV
+OnHover menus
+Annuaires
+** CA - représentant du CIM
+Lecture Charte + Lecture PV follow up.
+
+* Fraternité
+
+* Participations
+** JDG
+** CQI
+** CS Games
+** Intégrations
