@@ -11,6 +11,9 @@
 |------------+-------------+----------|
 | [[https://calendar.google.com/calendar/u/0/r/week][Calendrier]] | [[https://outlook.office.com/mail/][Outlook ETS]] | [[https://portail.etsmtl.ca/home][Mon ÉTS]]  |
 
+noctialia shell - quickshell
+niri
+
 * CEDILLE
 | [[https://github.com/ClubCedille][Cedille GitHub Links]]   | [[file:~/Documents/school/clubs/CEDILLE/][cedille folders]] |
 |------------------------+-----------------|
@@ -20,25 +23,43 @@
 | [[https://github.com/ClubCedille/Plateforme-Cedille][Plateforme-Cedille]]     | [[file:~/Documents/school/clubs/CEDILLE/Plateforme-Cedille/][platforme-wiki]]  |
 
 ** Document de vision
-
-
-** Beer & Learn
+** Automatic backups on db we are hosting
+** Arctic Conference
+** Gear + axutoire photo
+** Nouveau Membres
+** Portes ouvertes
+** Reseaux sociaux
 
 * AEETS
 Teams
-poste ouvert sur le CA d'entreprise AEETS
 
 ** admweb - Wix
 PV
 OnHover menus
 Annuaires
+
+Montreal Abroad
+BDC - fix button
+
+ordi windows au CA
+
 ** CA - représentant du CIM
 Lecture Charte + Lecture PV follow up.
+CA en janvier
 
 * Fraternité
+** horaire
+** VIP PUB reservation
+** Bottes et oublons
+
 
 * Participations
-** JDG
-** CQI
-** CS Games
-** Intégrations
+** Intégrations A26
+** CS Games 2026 : RETRO
+Chaque compétition a 2 Personnes sur 3 heures pour 6% CS CUP
+
+[[file:~/csgames26/hpc/hpc.org][HPC]]
+
+[[file:~/csgames26/shaders/shaders.org][shaders]]
+
+[[file:~/csgames26/devops/devops.org][DevOps]]

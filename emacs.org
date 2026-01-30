@@ -68,7 +68,6 @@
     :config
     (which-key-mode))
 
-
 #+end_src
 * Default Options
 #+begin_src elisp
@@ -276,121 +275,152 @@
 #+end_src
 * Org Mode
 #+begin_src elisp
-  ;;--------------------------------------------------------------------------
-  ;;  Org Mode
-  ;;--------------------------------------------------------------------------
+      ;;--------------------------------------------------------------------------
+      ;;  Org Mode
+      ;;--------------------------------------------------------------------------
 
-  (use-package org-bullets
-  	:ensure t
-  	:init
-  	(setq org-bullets-bullet-list
-  	      '("◉" "◎" "◇" "○" "►" "•"))
-  	:config
-  	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+      (use-package org-bullets
+      	:ensure t
+      	:init
+      	(setq org-bullets-bullet-list
+      	      '("◉" "◎" "◇" "○" "►" "•"))
+      	:config
+      	(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 
-  ;; active Babel languages
-  (org-babel-do-load-languages
-   'org-babel-load-languages
-   '((shell . t)
-     (java . t)
-     (plantuml . t)
-     (gnuplot . t)))
+    (defun org-babel-execute:nix (body params)
+      (let ((cmd (format "nix eval --raw --expr '%s'" body)))
+        (org-babel-eval cmd "")))
 
-  (setq org-plantuml-jar-path "~/.emacs.d/plantuml/plantuml.jar")
+      ;; active Babel languages
+      (org-babel-do-load-languages
+       'org-babel-load-languages
+       '((shell . t)
+         (java . t)
+         (plantuml . t)
+         (nix . t)
+         (gnuplot . t)))
 
-  (setq org-todo-keywords
-        '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "REDO(R)" "DONE(d)")))
+      (setq org-plantuml-jar-path "~/.emacs.d/plantuml/plantuml.jar")
 
-  ;; Org Reveal
-  ;;(require 'org-re-reveal)
-  ;;(setq org-re-reveal-root "file:///home/julien/emacs/reveal.js-master")
+      (setq org-todo-keywords
+            '((sequence "TODO(t)" "NEXT(n)" "WAIT(w)" "REDO(R)" "DONE(d)")))
 
-  (global-set-key (kbd "C-c n r") 'org-re-reveal-export-to-html)
+      ;; Org Reveal
+      ;;(require 'org-re-reveal)
+      ;;(setq org-re-reveal-root "file:///home/julien/emacs/reveal.js-master")
+      ;;(global-set-key (kbd "C-c n r") 'org-re-reveal-export-to-html)
 
-  ;; Org svg
-  (defun svg-progress-percent (value)
-    (save-match-data
-      (svg-image (svg-lib-concat
-                  (svg-lib-progress-bar  (/ (string-to-number value) 100.0)
-                                         nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-                  (svg-lib-tag (concat value "%")
-                               nil :stroke 0 :margin 0)) :ascent 'center)))
+      ;; org-present
+      (unless (package-installed-p 'org-present)
+        (package-install 'org-present))
 
-  (defun svg-progress-count (value)
-    (save-match-data
-      (let* ((seq (split-string value "/"))
-             (count (if (stringp (car seq))
-                        (float (string-to-number (car seq)))
-                      0))
-             (total (if (stringp (cadr seq))
-                        (float (string-to-number (cadr seq)))
-                      1000)))
-        (svg-image (svg-lib-concat
-                    (svg-lib-progress-bar (/ count total) nil
-                                          :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
-                    (svg-lib-tag value nil
-                                 :stroke 0 :margin 0)) :ascent 'center))))
+      ;; Install visual-fill-column
+      (unless (package-installed-p 'visual-fill-column)
+        (package-install 'visual-fill-column))
 
-  ;; org-roam dependencies
-  (use-package websocket
-    :ensure t)
+      ;; Configure fill width
+      (setq visual-fill-column-width 110
+            visual-fill-column-center-text t)
 
-  (use-package simple-httpd
-    :ensure t)
+      (defun my/org-present-start ()
+        ;; Center the presentation and wrap lines
+        (visual-fill-column-mode 1)
+        (visual-line-mode 1))
 
-  (use-package org-roam
-    :ensure t
-    :custom
-    (org-roam-directory "~/Documents/RoamNotes")
-    (org-roam-completion-everywhere t)
-    (org-roam-capture-templates
-     '(("d" "default" plain
-        "%?"
-        :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :default:")
-        :unnarrowed t)
-       ("e" "ets" plain
-        ""
-        :if-new (file+head "ets%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :ets:")
-        :unnarrowed t)
-       ("n" "notes" plain
-        ""
-        :if-new (file+head "notes%<%Y-%m-%d_%H:%M:%S>-${slug}.org" "#+title: ${title}\n#+author:Secrétaire Julien Giguère\n#+LANGUAGE: fr\n#+filetags: :ets:notes:")
-        :unnarrowed t)
-       ("s" "saura" plain
-        ""
-        :if-new (file+head "saura%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :saura:")
-        :unnarrowed t)
-       ))
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-  	       ("C-c n f" . org-roam-node-find)
-  	       ("C-c n i" . org-roam-node-insert)
-  	       ("C-c n g" . org-roam-ui-mode)
-  	       ("C-c n a" . org-roam-alias-add)
-  	       ;; Dailies
-  	       ("C-c n j" . org-roam-dailies-capture-today))
-    :config
-    (require 'org-roam-protocol)
-    (org-roam-setup))
-  ;; (add-to-list 'load-path "~/.emacs.d/gitclone/org-roam-ui/")
-  ;; (load-library "org-roam-ui")
+      (defun my/org-present-end ()
+        ;; Stop centering the document
+        (visual-fill-column-mode 0)
+        (visual-line-mode 0))
 
-  (use-package org
-    :commands (org-table-iterate-buffer-tables org-toggle-pretty-entities))
+      ;; Register hooks with org-present
+      (add-hook 'org-present-mode-hook 'my/org-present-start)
+      (add-hook 'org-present-mode-quit-hook 'my/org-present-end)
+      (global-set-key (kbd "C-c n p") 'org-present)
 
-  (use-package org-roam-ui
-    :commands (orui-open orui-node-local orui-node-zoom orui-sync-theme))
+      ;; Org svg
+      (defun svg-progress-percent (value)
+        (save-match-data
+          (svg-image (svg-lib-concat
+                      (svg-lib-progress-bar  (/ (string-to-number value) 100.0)
+                                             nil :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+                      (svg-lib-tag (concat value "%")
+                                   nil :stroke 0 :margin 0)) :ascent 'center)))
 
-  (setq native-comp-async-report-warnings-errors nil)
+      (defun svg-progress-count (value)
+        (save-match-data
+          (let* ((seq (split-string value "/"))
+                 (count (if (stringp (car seq))
+                            (float (string-to-number (car seq)))
+                          0))
+                 (total (if (stringp (cadr seq))
+                            (float (string-to-number (cadr seq)))
+                          1000)))
+            (svg-image (svg-lib-concat
+                        (svg-lib-progress-bar (/ count total) nil
+                                              :margin 0 :stroke 2 :radius 3 :padding 2 :width 11)
+                        (svg-lib-tag value nil
+                                     :stroke 0 :margin 0)) :ascent 'center))))
 
-  (require 'org-roam-export)
-  (setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
-  (add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
-  (setq org-latex-toc-command "\\tableofcontents  \\clearpage")
-  (define-key global-map (kbd "C-c n e") #'org-latex-export-to-pdf)
+      ;; org-roam dependencies
+      (use-package websocket
+        :ensure t)
 
-  ;; (define-key global-map (kbd "<f12>") #'org-transclusion-add)
-  ;; (define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
-  ;; (add-hook 'org-mode-hook 'org-transclusion-mode)
+      (use-package simple-httpd
+        :ensure t)
+
+      (use-package org-roam
+        :ensure t
+        :custom
+        (org-roam-directory "~/Documents/RoamNotes")
+        (org-roam-completion-everywhere t)
+        (org-roam-capture-templates
+         '(("d" "default" plain
+            "%?"
+            :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :default:")
+            :unnarrowed t)
+           ("e" "ets" plain
+            ""
+            :if-new (file+head "ets%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :ets:")
+            :unnarrowed t)
+           ("n" "notes" plain
+            ""
+            :if-new (file+head "notes%<%Y-%m-%d_%H:%M:%S>-${slug}.org" "#+title: ${title}\n#+author:Secrétaire Julien Giguère\n#+LANGUAGE: fr\n#+filetags: :ets:notes:")
+            :unnarrowed t)
+           ("s" "saura" plain
+            ""
+            :if-new (file+head "saura%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n#+filetags: :saura:")
+            :unnarrowed t)
+           ))
+        :bind (("C-c n l" . org-roam-buffer-toggle)
+      	       ("C-c n f" . org-roam-node-find)
+      	       ("C-c n i" . org-roam-node-insert)
+      	       ("C-c n g" . org-roam-ui-mode)
+      	       ("C-c n a" . org-roam-alias-add)
+      	       ;; Dailies
+      	       ("C-c n j" . org-roam-dailies-capture-today))
+        :config
+        (require 'org-roam-protocol)
+        (org-roam-setup))
+      ;; (add-to-list 'load-path "~/.emacs.d/gitclone/org-roam-ui/")
+      ;; (load-library "org-roam-ui")
+
+      (use-package org
+        :commands (org-table-iterate-buffer-tables org-toggle-pretty-entities))
+
+      (use-package org-roam-ui
+        :commands (orui-open orui-node-local orui-node-zoom orui-sync-theme))
+
+      (setq native-comp-async-report-warnings-errors nil)
+
+      (require 'org-roam-export)
+      (setq org-latex-packages-alist '(("margin=2cm" "geometry" nil)))
+      (add-to-list 'org-latex-packages-alist '("AUTO" "babel" nil))
+      (setq org-latex-toc-command "\\tableofcontents  \\clearpage")
+      (define-key global-map (kbd "C-c n e") #'org-latex-export-to-pdf)
+
+      ;; (define-key global-map (kbd "<f12>") #'org-transclusion-add)
+      ;; (define-key global-map (kbd "C-c n t") #'org-transclusion-mode)
+      ;; (add-hook 'org-mode-hook 'org-transclusion-mode)
 
 #+end_src
 * Auto Complete
@@ -414,6 +444,41 @@
 
 #+end_src
 * Tokens
+* Email
+#+begin_src elisp
+
+    ;; (delete 'mu4e evil-collection-mode-list)
+    ;; (delete 'mu4e-conversation evil-collection-mode-list)
+
+
+  (use-package mu4e
+    :ensure nil
+    ;; :load-path "/usr/share/emacs/site-lisp/mu4e/"
+    ;; :defer 20 ; Wait until 20 seconds after startup
+    :config
+
+    ;; This is set to 't' to avoid mail syncing issues when using mbsync
+    (setq mu4e-change-filenames-when-moving t)
+
+    ;; Refresh mail using isync every 10 minutes
+    (setq mu4e-update-interval (* 10 60))
+    (setq mu4e-get-mail-command "mbsync -a")
+    (setq mu4e-maildir "~/Mail")
+
+    (setq mu4e-drafts-folder "/[Gmail]/Drafts")
+    (setq mu4e-sent-folder   "/[Gmail]/Sent Mail")
+    (setq mu4e-refile-folder "/[Gmail]/All Mail")
+    (setq mu4e-trash-folder  "/[Gmail]/Trash")
+
+    (setq mu4e-maildir-shortcuts
+        '(("/Inbox"             . ?i)
+          ("/[Gmail]/Sent Mail" . ?s)
+          ("/[Gmail]/Trash"     . ?t)
+          ("/[Gmail]/Drafts"    . ?d)
+          ("/[Gmail]/All Mail"  . ?a))))
+
+
+#+end_src
 * Plugins
 #+begin_src elisp
   ;;--------------------------------------------------------------------------

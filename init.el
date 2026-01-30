@@ -35,15 +35,16 @@
  '(elcord-use-major-mode-as-main-icon t)
  '(org-agenda-files '("~/Documents/RoamNotes/20240429181824-ets.org"))
  '(package-selected-packages
-   '(2048-game aider avy chatgpt-shell company crdt drag-stuff elcord
-               flycheck-yamllint flymake-yamllint gptel helm ivy
-               json-mode lsp-java lsp-ui lsp-yaml magik8s magit
-               multiple-cursors nix-mode org-bullets org-roam-ui
+   '(2048-game aider avy chatgpt-shell company crdt doom-themes
+               drag-stuff elcord flycheck-yamllint flymake-yamllint
+               gptel helm ivy json-mode lsp-java lsp-ui lsp-yaml
+               magik8s magit mermaid-mode multiple-cursors nhexl-mode
+               nix-mode org-bullets org-present org-roam-ui paxedit
                projectile pug-mode restclient simple-httpd swiper
                tree-sitter-langs treemacs-icons-dired treemacs-magit
                treemacs-persp treemacs-projectile treemacs-tab-bar
-               treesit-auto try tsc vterm vue-mode websocket wikinforg
-               wsd-mode yaml yaml-mode yaml-pro)))
+               treesit-auto try tsc visual-fill-column vterm vue-mode
+               websocket wikinforg wsd-mode yaml yaml-mode yaml-pro)))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
